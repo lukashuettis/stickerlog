@@ -1,0 +1,110 @@
+@import url('https://rsms.me/inter/inter.css') layer(base);
+/* Note: Inter font from rsms.me — switch to self-hosted @font-face for full DSGVO compliance later. */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #09090b;
+    --card: #ffffff;
+    --card-foreground: #09090b;
+    --muted: #f4f4f5;
+    --muted-foreground: #71717a;
+    --border: #e4e4e7;
+    --input: #e4e4e7;
+    --ring: #22c55e;
+    --primary: #22c55e;
+    --primary-foreground: #ffffff;
+    --primary-soft: #dcfce7;
+    --primary-soft-fg: #14532d;
+    --destructive: #ef4444;
+    --destructive-soft: #fee2e2;
+    --warning: #f59e0b;
+    --secondary: #f4f4f5;
+    --secondary-foreground: #18181b;
+    --missing-bg: #f4f4f5;
+    --missing-fg: #a1a1aa;
+    --owned-bg: #22c55e;
+    --owned-fg: #ffffff;
+    --skeleton: #e4e4e7;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 20px 40px -8px rgba(0, 0, 0, 0.18), 0 8px 16px -4px rgba(0, 0, 0, 0.08);
+  }
+
+  .dark {
+    --background: #09090b;
+    --foreground: #fafafa;
+    --card: #18181b;
+    --card-foreground: #fafafa;
+    --muted: #27272a;
+    --muted-foreground: #a1a1aa;
+    --border: #27272a;
+    --input: #3f3f46;
+    --primary: #22c55e;
+    --primary-foreground: #052e13;
+    --primary-soft: #14532d;
+    --primary-soft-fg: #bbf7d0;
+    --destructive: #f87171;
+    --destructive-soft: #450a0a;
+    --secondary: #27272a;
+    --secondary-foreground: #fafafa;
+    --missing-bg: #27272a;
+    --missing-fg: #52525b;
+    --skeleton: #27272a;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 20px 40px -8px rgba(0, 0, 0, 0.6);
+  }
+
+  html,
+  body,
+  #root {
+    @apply h-full;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+    letter-spacing: -0.005em;
+  }
+
+  .numeric {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+
+  .no-select {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--skeleton) 0%,
+      color-mix(in srgb, var(--skeleton) 50%, transparent) 50%,
+      var(--skeleton) 100%
+    );
+    background-size: 200px 100%;
+    @apply animate-shimmer rounded-md;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .pb-safe-nav {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  }
+  .bottom-safe {
+    bottom: env(safe-area-inset-bottom);
+  }
+}
