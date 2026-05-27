@@ -1,5 +1,5 @@
-@import url('https://rsms.me/inter/inter.css') layer(base);
-/* Note: Inter font from rsms.me — switch to self-hosted @font-face for full DSGVO compliance later. */
+/* Inter is self-hosted via @fontsource/inter, imported in main.tsx.
+   No third-party font requests — full DSGVO compliance. */
 
 @tailwind base;
 @tailwind components;

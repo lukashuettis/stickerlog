@@ -59,6 +59,8 @@ It is not affiliated with, endorsed by, or connected to Panini, FIFA, Coca-Cola,
 
 This project does not host official sticker images, logos, or copyrighted album artwork.
 
+See [DATA_SOURCES.md](./DATA_SOURCES.md) for what data is included and where it comes from.
+
 ## Tech stack
 
 - React 19
@@ -81,7 +83,7 @@ npm run build
 
 Contributions are welcome, especially:
 
-- sticker data corrections
+- sticker data corrections (see [DATA_SOURCES.md](./DATA_SOURCES.md) for source rules)
 - translations (other languages beyond DE / EN)
 - browser / PWA fixes
 - accessibility improvements

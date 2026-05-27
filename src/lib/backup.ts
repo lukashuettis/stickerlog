@@ -114,7 +114,8 @@ export const BackupSchemaV1 = z.object({
 export type BackupV2 = z.infer<typeof BackupSchemaV2>
 export type BackupV1 = z.infer<typeof BackupSchemaV1>
 
-const APP_VERSION = '0.2.0'
+// Keep in sync with package.json "version".
+const APP_VERSION = '0.1.0'
 
 // ─── Export ───────────────────────────────────────────────────────────────
 

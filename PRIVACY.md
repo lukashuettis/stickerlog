@@ -15,9 +15,9 @@ cookies, no fingerprinting. The site has no backend at all.
 
 - **Nothing automatically.** Your data never leaves your device unless _you_
   export a backup file and choose to share it.
-- The site does load assets (HTML, CSS, JS, the Inter font) from the hosting
-  CDN (GitHub Pages by default). These are normal page requests; no personal
-  data is transmitted.
+- The site loads its own static assets (HTML, CSS, JS, Inter font files) from
+  the hosting origin (GitHub Pages by default). All assets are bundled with
+  the app — no third-party fonts, scripts, or trackers are loaded.
 
 ## Where your data lives
 
