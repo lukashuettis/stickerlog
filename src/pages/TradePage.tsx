@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { MessageCircle, FileText, Download } from 'lucide-react'
+import { Share2, FileText } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { TopBar } from '@/components/ui/TopBar'
@@ -9,10 +9,10 @@ import { useOwnedMap } from '@/hooks/useCollection'
 import { ALBUM } from '@/data/album'
 import { findTeamByCode, TEAMS, teamName } from '@/data/teams'
 import {
-  copyToClipboard,
   downloadBlob,
   generateCsv,
   generateWhatsAppText,
+  shareText,
   type SeekOfferLists,
   type TradeListGroup,
 } from '@/lib/export'
@@ -62,7 +62,7 @@ export function TradePage() {
   const activeGroups: Array<TradeListGroup & { dupCounts?: Map<string, number> }> =
     tab === 'seek' ? lists.seek : lists.offer
 
-  const handleCopyWhatsApp = async () => {
+  const handleShare = async () => {
     const text = generateWhatsAppText(lists, {
       listTitle: t('trade.exportListTitle'),
       seekHeader: (n) => t('trade.exportSeek', { n }),
@@ -70,8 +70,15 @@ export function TradePage() {
       empty: t('trade.exportEmpty'),
       footer: (url) => t('trade.exportFooter', { url }),
     })
-    const ok = await copyToClipboard(text)
-    show(ok ? t('trade.whatsappCopied') : t('trade.whatsappCopyFailed'), ok ? 'success' : 'error')
+    const result = await shareText({ title: t('trade.shareTitle'), text })
+    if (result.method === 'native') {
+      show(t('trade.sharedNative'), 'success')
+    } else if (result.method === 'clipboard') {
+      show(t('trade.sharedClipboard'), 'success')
+    } else if (result.method === 'failed') {
+      show(t('trade.shareFailed'), 'error')
+    }
+    // 'cancelled' = user dismissed the native sheet → no toast (silent UX)
   }
 
   const handleDownloadCsv = () => {
@@ -164,15 +171,14 @@ export function TradePage() {
 
       {/* Sticky export footer.
           - Mobile: docked above the BottomNav, full width.
-          - Desktop: in-flow at the bottom of the content card (no Bottom-Nav). */}
+          - Desktop: in-flow at the bottom of the content card (no Bottom-Nav).
+          On mobile the Share button opens the native iOS/Android share sheet
+          (WhatsApp, Mail, etc.). On desktop without Web Share it falls back
+          to clipboard so the user can paste into any chat app. */}
       <div className="fixed inset-x-0 bottom-[72px] z-20 px-4 py-3 bg-card/90 backdrop-blur-xl border-t border-border flex flex-col gap-2 lg:static lg:inset-auto lg:px-0 lg:bg-transparent lg:border-0 lg:backdrop-blur-0 lg:mt-6">
         <div className="grid grid-cols-2 gap-2">
-          <Button
-            size="md"
-            icon={<MessageCircle size={18} />}
-            onClick={handleCopyWhatsApp}
-          >
-            {t('trade.copyWhatsapp')}
+          <Button size="md" icon={<Share2 size={18} />} onClick={handleShare}>
+            {t('trade.share')}
           </Button>
           <Button
             variant="outline"
@@ -183,15 +189,6 @@ export function TradePage() {
             {t('trade.exportCsv')}
           </Button>
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          icon={<Download size={16} />}
-          onClick={() => show(t('trade.pdfToast'), 'info')}
-          className="text-xs"
-        >
-          {t('trade.pdfSoon')}
-        </Button>
       </div>
     </div>
   )

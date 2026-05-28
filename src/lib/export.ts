@@ -84,6 +84,47 @@ function csvEscape(value: string): string {
   return value
 }
 
+// ─── Web Share API with clipboard fallback ────────────────────────────────
+
+export type ShareResult =
+  | { ok: true; method: 'native' }
+  | { ok: true; method: 'clipboard' }
+  | { ok: false; method: 'cancelled' }
+  | { ok: false; method: 'failed' }
+
+interface ShareInput {
+  title: string
+  text: string
+}
+
+/**
+ * Try the native Web Share API first (iOS Safari ≥13, Android Chrome,
+ * macOS Safari, Edge, Chrome desktop). Fall back to clipboard for
+ * unsupported browsers (notably Firefox desktop) and for users who
+ * cancel the native sheet without committing.
+ *
+ * The caller is responsible for showing a toast — the returned `method`
+ * lets them pick the right wording ("shared!" vs "copied — paste it").
+ */
+export async function shareText({ title, text }: ShareInput): Promise<ShareResult> {
+  if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+    try {
+      await navigator.share({ title, text })
+      return { ok: true, method: 'native' }
+    } catch (err) {
+      // User dismissed the share sheet — don't fall back to clipboard,
+      // the user explicitly chose not to share.
+      if (err instanceof DOMException && err.name === 'AbortError') {
+        return { ok: false, method: 'cancelled' }
+      }
+      // Anything else (NotAllowedError on insecure context, etc.) — fall
+      // through to clipboard so the user still gets the text somehow.
+    }
+  }
+  const copied = await copyToClipboard(text)
+  return copied ? { ok: true, method: 'clipboard' } : { ok: false, method: 'failed' }
+}
+
 // ─── Clipboard helper ─────────────────────────────────────────────────────
 
 export async function copyToClipboard(text: string): Promise<boolean> {
