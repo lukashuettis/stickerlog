@@ -251,6 +251,15 @@ export function SettingsPage() {
       <div className="px-5 pt-6 pb-4 text-center">
         <div className="text-[11px] text-muted-foreground opacity-80">
           {t('settings.footer')}
+          {' · '}
+          <a
+            href="https://www.lukashuettis.de/impressum"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="underline hover:text-foreground"
+          >
+            {t('settings.impressum')}
+          </a>
         </div>
       </div>
     </div>

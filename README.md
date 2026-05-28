@@ -92,6 +92,15 @@ Contributions are welcome, especially:
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
+## Legal
+
+- Code is MIT licensed.
+- Factual checklist data, such as sticker numbers, team codes, and optional player names, is provided as factual identifiers for personal collection tracking. Player names, if included, are manually transcribed or verified from a legally purchased physical album.
+- No ownership is claimed over third-party names, teams, trademarks, logos, or collection identifiers.
+- No official sticker images, logos, player portraits, or copied album artwork are included.
+
+**Impressum / Legal Notice (German):** https://www.lukashuettis.de/impressum
+
 ## License
 
 MIT License. See [LICENSE](./LICENSE).
@@ -110,3 +119,5 @@ Gebaut von [Lukas Hüttis](https://www.youtube.com/@lukashuettis).
 _Vibecoded with heart, together with Claude Code & Codex._
 
 Inoffizielles Fan-Projekt. Nicht verbunden mit Panini, FIFA, Coca-Cola oder anderen Rechteinhabern.
+
+Impressum: https://www.lukashuettis.de/impressum

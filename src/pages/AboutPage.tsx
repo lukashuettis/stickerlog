@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft, Mail, Shield, FileText } from 'lucide-react'
+import { ArrowLeft, Mail, Shield, FileText, Building2 } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
 import { BrandMark } from '@/components/ui/Brand'
 import { TopBar } from '@/components/ui/TopBar'
@@ -40,6 +40,7 @@ const LINKS = {
   youtube: 'https://www.youtube.com/@lukashuettis',
   feedback: 'mailto:lukash@posteo.de?subject=StickerLog%20feedback',
   privacy: 'https://github.com/lukashuettis/stickerlog/blob/main/PRIVACY.md',
+  impressum: 'https://www.lukashuettis.de/impressum',
   license: 'https://github.com/lukashuettis/stickerlog/blob/main/LICENSE',
 }
 
@@ -95,26 +96,50 @@ export function AboutPage() {
         </Card>
       </div>
 
-      {/* Link buttons */}
-      <div className="px-5 pt-3 lg:px-0 grid grid-cols-2 gap-2">
-        <AboutLink href={LINKS.github} icon={<GithubIcon size={18} />} label={t('about.btnGithub')} />
-        <AboutLink href={LINKS.youtube} icon={<YoutubeIcon size={18} />} label={t('about.btnYoutube')} />
-        <AboutLink
-          href={LINKS.feedback}
-          icon={<Mail size={18} />}
-          label={t('about.btnFeedback')}
-        />
-        <AboutLink
-          href={LINKS.privacy}
-          icon={<Shield size={18} />}
-          label={t('about.btnPrivacy')}
-        />
-        <AboutLink
-          href={LINKS.license}
-          icon={<FileText size={18} />}
-          label={t('about.btnLicense')}
-          className="col-span-2"
-        />
+      {/* Project links */}
+      <div className="px-5 pt-3 lg:px-0">
+        <SectionLabel>{t('about.groupProject')}</SectionLabel>
+        <div className="grid grid-cols-2 gap-2">
+          <AboutLink
+            href={LINKS.github}
+            icon={<GithubIcon size={18} />}
+            label={t('about.btnGithub')}
+          />
+          <AboutLink
+            href={LINKS.youtube}
+            icon={<YoutubeIcon size={18} />}
+            label={t('about.btnYoutube')}
+          />
+          <AboutLink
+            href={LINKS.feedback}
+            icon={<Mail size={18} />}
+            label={t('about.btnFeedback')}
+            className="col-span-2"
+          />
+        </div>
+      </div>
+
+      {/* Legal links */}
+      <div className="px-5 pt-4 lg:px-0">
+        <SectionLabel>{t('about.groupLegal')}</SectionLabel>
+        <div className="grid grid-cols-2 gap-2">
+          <AboutLink
+            href={LINKS.privacy}
+            icon={<Shield size={18} />}
+            label={t('about.btnPrivacy')}
+          />
+          <AboutLink
+            href={LINKS.impressum}
+            icon={<Building2 size={18} />}
+            label={t('about.btnImpressum')}
+          />
+          <AboutLink
+            href={LINKS.license}
+            icon={<FileText size={18} />}
+            label={t('about.btnLicense')}
+            className="col-span-2"
+          />
+        </div>
       </div>
 
       {/* Disclaimer */}
@@ -123,6 +148,14 @@ export function AboutPage() {
           {t('about.disclaimer')}
         </p>
       </div>
+    </div>
+  )
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-2 pl-1">
+      {children}
     </div>
   )
 }

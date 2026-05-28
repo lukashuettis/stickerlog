@@ -262,7 +262,8 @@ const DE = {
   'settings.github': 'Open Source auf GitHub',
   'settings.githubToast': 'GitHub-Link kommt sobald veröffentlicht',
   'settings.disclaimer': 'Inoffizielles Fan-Projekt · nicht von Panini oder FIFA',
-  'settings.footer': 'Made by Lukas Hüttis · Open Source · MIT License · v0.1.0',
+  'settings.footer': 'Made by Lukas Hüttis · Open Source · MIT License · v0.1.1',
+  'settings.impressum': 'Impressum',
 
   // ── About page ─────────────────────────────────────────────────────────
   'about.title': 'StickerLog',
@@ -275,10 +276,13 @@ const DE = {
   'about.vibecoded': 'Vibecoded with heart, together with Claude Code & Codex.',
   'about.disclaimer':
     'Inoffizielles Fan-Projekt. Nicht verbunden mit Panini, FIFA, Coca-Cola oder anderen Rechteinhabern.',
+  'about.groupProject': 'Projekt',
+  'about.groupLegal': 'Rechtliches',
   'about.btnGithub': 'GitHub',
   'about.btnYoutube': 'YouTube',
   'about.btnFeedback': 'Feedback geben',
   'about.btnPrivacy': 'Datenschutz',
+  'about.btnImpressum': 'Impressum',
   'about.btnLicense': 'Lizenz',
 
   // ── PWA update prompt ──────────────────────────────────────────────────
@@ -592,7 +596,8 @@ const EN: Record<MessageKey, string> = {
   'settings.github': 'Open source on GitHub',
   'settings.githubToast': 'GitHub link coming once published',
   'settings.disclaimer': 'Unofficial fan project · not from Panini or FIFA',
-  'settings.footer': 'Made by Lukas Hüttis · Open source · MIT License · v0.1.0',
+  'settings.footer': 'Made by Lukas Hüttis · Open source · MIT License · v0.1.1',
+  'settings.impressum': 'Impressum',
 
   // ── About page ─────────────────────────────────────────────────────────
   'about.title': 'StickerLog',
@@ -605,10 +610,13 @@ const EN: Record<MessageKey, string> = {
   'about.vibecoded': 'Vibecoded with heart, together with Claude Code & Codex.',
   'about.disclaimer':
     'Unofficial fan project. Not affiliated with Panini, FIFA, Coca-Cola, or any other rights holder.',
+  'about.groupProject': 'Project',
+  'about.groupLegal': 'Legal',
   'about.btnGithub': 'GitHub',
   'about.btnYoutube': 'YouTube',
   'about.btnFeedback': 'Send feedback',
   'about.btnPrivacy': 'Privacy',
+  'about.btnImpressum': 'Legal Notice / Impressum (German)',
   'about.btnLicense': 'License',
 
   // ── PWA update prompt ──────────────────────────────────────────────────
