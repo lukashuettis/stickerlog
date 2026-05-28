@@ -4,69 +4,28 @@ import { NATIONAL_TEAMS } from './teams'
 // The 980 base-album slots. Coca-Cola promos and DFB Glitter are intentionally
 // excluded — they live in promos.ts as a separate set.
 //
-// Layout (matches the Panini WC 2026 base album published checklist):
-//   slots 1–10   → Intro/Opening (cover, mascot, ball, stadiums, schedule, …)
-//   slots 11–20  → FIFA Museum (past champions 1934–2022)
+// Layout (matches the Panini WC 2026 base album printed checklist):
+//   slots 1–20   → FWC specials (Cover, FIFA emblems, mascots, stadiums, museum…)
+//                  IDs FWC-0 … FWC-19. Sticker #0 is the Panini logo / cover.
 //   slots 21–980 → 48 teams × 20 stickers each (badge, team photo, 18 players)
 //
-// Player names are intentionally left blank — they are not in the public
-// checklist as structured data. Users see the sticker number (e.g. "GER-1")
-// which is what Panini prints on the back. Names can be filled in later from
-// an authoritative source.
-
-const INTRO_LABELS: string[] = [
-  'Cover',
-  'Eröffnung',
-  'WM-Pokal',
-  'Maskottchen',
-  'Stadion · MetLife',
-  'Stadion · SoFi',
-  'Stadion · AT&T',
-  'Stadion · Estadio Azteca',
-  'Spielplan',
-  'Übersicht',
-]
-
-const FIFA_MUSEUM_LABELS: string[] = [
-  '1934 Italien',
-  '1958 Brasilien',
-  '1966 England',
-  '1974 Deutschland',
-  '1986 Argentinien',
-  '1998 Frankreich',
-  '2002 Brasilien',
-  '2010 Spanien',
-  '2014 Deutschland',
-  '2018 Frankreich',
-]
+// Player names + special labels are intentionally left blank — they are not
+// in the public checklist as structured data. Users see the sticker number
+// (e.g. "GER-1", "FWC-3") which is what Panini prints on the back. Labels
+// can be filled in later from `src/data/player-names.csv`.
 
 function buildAlbum(): AlbumSlot[] {
   const slots: AlbumSlot[] = []
 
-  // Intro / Opening (1-10)
-  for (let i = 0; i < 10; i++) {
-    const n = i + 1
+  // FWC specials (FWC-0 … FWC-19). Same shape as a team block so the team
+  // grid renders them uniformly. All 20 are foil in the printed album.
+  for (let i = 0; i <= 19; i++) {
     slots.push({
-      n,
-      id: `INT-${n}`,
-      teamCode: 'INT',
-      number: n,
+      n: i + 1,
+      id: `FWC-${i}`,
+      teamCode: 'FWC',
+      number: i,
       type: 'intro',
-      playerName: INTRO_LABELS[i],
-      hasFoil: true, // intro stickers are usually foil
-    })
-  }
-
-  // FIFA Museum (11-20)
-  for (let i = 0; i < 10; i++) {
-    const n = 11 + i
-    slots.push({
-      n,
-      id: `INT-${n}`,
-      teamCode: 'INT',
-      number: n,
-      type: 'fifa_museum',
-      playerName: FIFA_MUSEUM_LABELS[i],
       hasFoil: true,
     })
   }

@@ -48,6 +48,22 @@ describe('parseStickerCodes — tolerant parser', () => {
     expect(result.filter((r) => r.valid)).toHaveLength(2)
   })
 
+  // FWC = the 20 special stickers (cover, FIFA emblems, stadiums, museum).
+  // Numbered FWC-0 to FWC-19 — same matcher tolerance as country codes.
+  it.each([
+    ['FWC 0', 'FWC-0'],
+    ['FWC-0', 'FWC-0'],
+    ['FWC0', 'FWC-0'],
+    ['fwc 0', 'FWC-0'],
+    ['FWC 19', 'FWC-19'],
+    ['fwc19', 'FWC-19'],
+  ])('accepts FWC specials: %s → %s', (input, expected) => {
+    const result = parseStickerCodes(input)
+    expect(result[0]?.input).toBe(expected)
+    expect(result[0]?.valid).toBe(true)
+    expect(result[0]?.stickerId).toBe(expected)
+  })
+
   it('handles empty/whitespace input gracefully', () => {
     expect(parseStickerCodes('')).toEqual([])
     expect(parseStickerCodes('   ')).toEqual([])

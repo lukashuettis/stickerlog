@@ -83,7 +83,7 @@ export const TEAMS: Team[] = [
   { code: 'PAN', name: 'Panama', nameEn: 'Panama', group: 'L', confederation: 'CONCACAF', flagColors: ['#005293', '#ffffff', '#d21034'] },
 
   // Intro / FIFA Museum pseudo-team
-  { code: 'INT', name: 'Cover & Spezial', nameEn: 'Cover & Specials', group: null, confederation: 'INT', flagColors: ['#0a5e3e', '#ffce00', '#0a5e3e'] },
+  { code: 'FWC', name: 'Cover & Spezial', nameEn: 'Cover & Specials', group: null, confederation: 'FIFA', flagColors: ['#0a5e3e', '#ffce00', '#0a5e3e'] },
 ]
 
 /** Resolve the team's display name for the given locale (falls back to German). */
@@ -102,4 +102,4 @@ export function findTeamByCode(code: string): Team | undefined {
 }
 
 /** All 48 national teams in album order (group A first → L last). */
-export const NATIONAL_TEAMS = TEAMS.filter((t) => t.code !== 'INT')
+export const NATIONAL_TEAMS = TEAMS.filter((t) => t.code !== 'FWC')
