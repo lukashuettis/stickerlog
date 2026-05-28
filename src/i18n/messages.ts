@@ -264,6 +264,17 @@ const DE = {
   'settings.disclaimer': 'Inoffizielles Fan-Projekt · nicht von Panini oder FIFA',
   'settings.footer': 'Made by Lukas Hüttis · Open Source · MIT License · v0.1.1',
   'settings.impressum': 'Impressum',
+  'settings.groupInstall': 'Installation',
+  'install.title': 'App installieren',
+  'install.subtitleAndroid': 'Vom Home-Bildschirm starten — auch offline',
+  'install.subtitleIos': 'In drei Schritten — auch offline',
+  'install.iosSheetTitle': 'Auf iPhone installieren',
+  'install.iosSheetIntro':
+    'Safari hat keinen Auto-Installer. Die App kommt mit drei Tipps auf deinen Home-Bildschirm.',
+  'install.iosStep1': 'Unten auf das Teilen-Symbol tippen',
+  'install.iosStep2': '„Zum Home-Bildschirm" wählen',
+  'install.iosStep3': '„Hinzufügen" tippen — fertig',
+  'install.iosClose': 'Verstanden',
 
   // ── About page ─────────────────────────────────────────────────────────
   'about.title': 'StickerLog',
@@ -598,6 +609,17 @@ const EN: Record<MessageKey, string> = {
   'settings.disclaimer': 'Unofficial fan project · not from Panini or FIFA',
   'settings.footer': 'Made by Lukas Hüttis · Open source · MIT License · v0.1.1',
   'settings.impressum': 'Impressum',
+  'settings.groupInstall': 'Install',
+  'install.title': 'Install app',
+  'install.subtitleAndroid': 'Launch from your home screen — works offline',
+  'install.subtitleIos': 'Three taps — works offline',
+  'install.iosSheetTitle': 'Install on iPhone',
+  'install.iosSheetIntro':
+    "Safari has no auto-installer. Three taps and the app lives on your home screen.",
+  'install.iosStep1': 'Tap the share icon at the bottom',
+  'install.iosStep2': "Choose “Add to Home Screen”",
+  'install.iosStep3': "Tap “Add” — done",
+  'install.iosClose': 'Got it',
 
   // ── About page ─────────────────────────────────────────────────────────
   'about.title': 'StickerLog',

@@ -12,13 +12,16 @@ import {
   Info,
   Layers,
   ChevronRight,
+  Smartphone,
 } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { TopBar } from '@/components/ui/TopBar'
 import { IconBtn } from '@/components/ui/IconBtn'
 import { useToast } from '@/components/ui/Toast'
+import { InstallSheet } from '@/components/InstallSheet'
 import { useSetting } from '@/hooks/useCollection'
+import { useInstallPrompt } from '@/hooks/useInstallPrompt'
 import { downloadBackup, importBackup, type ImportMode } from '@/lib/backup'
 import { setSetting, wipeAllUserData } from '@/lib/db'
 import { applyDarkClass, persistDark } from '@/lib/theme'
@@ -34,6 +37,19 @@ export function SettingsPage() {
   const darkMode = useSetting<boolean>('darkMode', false)
   const fileRef = useRef<HTMLInputElement>(null)
   const [importMode, setImportMode] = useState<ImportMode>('merge')
+  const install = useInstallPrompt()
+  const [iosSheetOpen, setIosSheetOpen] = useState(false)
+  // Show the install row whenever we have any actionable install path AND
+  // the app isn't already running as a PWA. On iOS we can always at least
+  // show the manual instructions; on Chromium we need the prompt event.
+  const showInstallRow = !install.isInstalled && (install.canPrompt || install.isIOS)
+  const handleInstallClick = () => {
+    if (install.canPrompt) {
+      void install.triggerInstall()
+    } else if (install.isIOS) {
+      setIosSheetOpen(true)
+    }
+  }
 
   // Date.now() is impure; useMemo caches the result per render. The rule
   // doesn't recognise the cache, but practically this only re-computes when
@@ -184,6 +200,21 @@ export function SettingsPage() {
         </Card>
       </div>
 
+      {/* Install — only shown if there's an actionable path and not yet installed */}
+      {showInstallRow && (
+        <SettingsGroup label={t('settings.groupInstall')}>
+          <SettingsRow
+            icon={<Smartphone size={18} />}
+            title={t('install.title')}
+            subtitle={
+              install.canPrompt ? t('install.subtitleAndroid') : t('install.subtitleIos')
+            }
+            onClick={handleInstallClick}
+            chevron
+          />
+        </SettingsGroup>
+      )}
+
       {/* Display */}
       <SettingsGroup label={t('settings.groupDisplay')}>
         <SettingsRow
@@ -262,6 +293,8 @@ export function SettingsPage() {
           </a>
         </div>
       </div>
+
+      <InstallSheet open={iosSheetOpen} onClose={() => setIosSheetOpen(false)} />
     </div>
   )
 }
