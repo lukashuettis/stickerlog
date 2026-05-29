@@ -10,6 +10,12 @@ updates:
         patterns: [lucide-react]
       types:
         patterns: ['@types/*']
+    # Skip major bumps that would require manual migration work.
+    # Tailwind 4 is a complete architecture rewrite (Oxide engine, CSS-first
+    # config); we'll plan that move deliberately, not via auto-PR.
+    ignore:
+      - dependency-name: tailwindcss
+        update-types: [version-update:semver-major]
   - package-ecosystem: github-actions
     directory: /
     schedule:
