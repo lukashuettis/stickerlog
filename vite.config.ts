@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
@@ -6,6 +6,39 @@ import path from 'path'
 // Base path matches the GitHub Pages repo name. Change here if forking
 // (and update the matching manifest start_url/scope below).
 const BASE = '/stickerlog/'
+
+// Inject a strict Content-Security-Policy meta tag into the production
+// build only. Skipped in dev because Vite's HMR injects inline scripts
+// and connects via WebSocket — both would be blocked by a strict CSP.
+//
+// In production our bundle has zero inline scripts (Vite emits external
+// files only), so we can keep script-src locked to 'self'. React applies
+// inline `style="..."` attributes for some components, so style-src
+// keeps 'unsafe-inline' — required for the style attribute, not <style>.
+function injectCsp(): Plugin {
+  const policy = [
+    "default-src 'self'",
+    "script-src 'self'",
+    "style-src 'self' 'unsafe-inline'",
+    "font-src 'self'",
+    "img-src 'self' data:",
+    "connect-src 'self'",
+    "manifest-src 'self'",
+    "worker-src 'self'",
+    "base-uri 'self'",
+    "form-action 'none'",
+  ].join('; ')
+  return {
+    name: 'inject-csp',
+    apply: 'build',
+    transformIndexHtml(html) {
+      return html.replace(
+        '<meta charset="UTF-8" />',
+        `<meta charset="UTF-8" />\n    <meta http-equiv="Content-Security-Policy" content="${policy}" />`,
+      )
+    },
+  }
+}
 
 export default defineConfig({
   base: BASE,
@@ -15,6 +48,7 @@ export default defineConfig({
     },
   },
   plugins: [
+    injectCsp(),
     react(),
     VitePWA({
       registerType: 'autoUpdate',
