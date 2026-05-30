@@ -275,6 +275,21 @@ const DE = {
   'install.iosStep2': '„Zum Home-Bildschirm" wählen',
   'install.iosStep3': '„Hinzufügen" tippen — fertig',
   'install.iosClose': 'Verstanden',
+  'install.androidStep1': 'Oben rechts auf die drei Punkte ⋮ tippen',
+  'install.androidStep2': '„App installieren" oder „Zur Startseite hinzufügen" wählen',
+  'install.androidStep3': '„Installieren" bestätigen',
+  'install.androidPromptHint':
+    'Wenn beim ersten Aufruf direkt ein Banner kommt — einfach drauftippen.',
+  'install.installNow': 'Jetzt installieren',
+  'install.slideTitleIos': 'Aufs iPhone packen',
+  'install.slideTitleAndroid': 'Aufs Handy packen',
+  'install.slideTitleDesktop': 'Als Desktop-App installieren',
+  'install.slideBodyIos':
+    'Drei Tipps und StickerLog liegt mit eigenem App-Icon auf deinem Home-Bildschirm — auch offline.',
+  'install.slideBodyAndroid':
+    'Mit dem Chrome-Menü startest du die App direkt vom Home-Bildschirm — auch offline.',
+  'install.slideBodyDesktop':
+    'Über das Browser-Menü installierst du StickerLog als App mit eigenem Fenster.',
 
   // ── About page ─────────────────────────────────────────────────────────
   'about.title': 'StickerLog',
@@ -620,6 +635,21 @@ const EN: Record<MessageKey, string> = {
   'install.iosStep2': "Choose “Add to Home Screen”",
   'install.iosStep3': "Tap “Add” — done",
   'install.iosClose': 'Got it',
+  'install.androidStep1': 'Tap the three-dot menu ⋮ in the top right',
+  'install.androidStep2': "Choose “Install app” or “Add to Home Screen”",
+  'install.androidStep3': "Confirm with “Install”",
+  'install.androidPromptHint':
+    'If a banner pops up the first time you visit — just tap it.',
+  'install.installNow': 'Install now',
+  'install.slideTitleIos': 'Put it on your iPhone',
+  'install.slideTitleAndroid': 'Put it on your Android',
+  'install.slideTitleDesktop': 'Install as a desktop app',
+  'install.slideBodyIos':
+    'Three taps and StickerLog lives on your home screen with its own app icon — works offline.',
+  'install.slideBodyAndroid':
+    'Use the Chrome menu and launch the app from your home screen — works offline.',
+  'install.slideBodyDesktop':
+    'Install StickerLog from your browser menu — runs in its own window.',
 
   // ── About page ─────────────────────────────────────────────────────────
   'about.title': 'StickerLog',
