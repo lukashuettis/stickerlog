@@ -63,13 +63,29 @@ export function TradePage() {
     tab === 'seek' ? lists.seek : lists.offer
 
   const handleShare = async () => {
-    const text = generateWhatsAppText(lists, {
-      listTitle: t('trade.exportListTitle'),
-      seekHeader: (n) => t('trade.exportSeek', { n }),
-      offerHeader: (n) => t('trade.exportOffer', { n }),
-      empty: t('trade.exportEmpty'),
-      footer: (url) => t('trade.exportFooter', { url }),
-    })
+    // Respect the active tab: brother shared the "offer" tab but the share
+    // text used to include both lists with seek on top, so the recipient
+    // (Lukas) saw the seek list and thought that was all of it. Now we
+    // only send what the user is actually looking at.
+    const activeTotal = tab === 'seek' ? lists.totalSeek : lists.totalOffer
+    if (activeTotal === 0) {
+      show(tab === 'seek' ? t('trade.shareEmptySeek') : t('trade.shareEmptyOffer'), 'info')
+      return
+    }
+
+    const titleKey =
+      tab === 'seek' ? 'trade.exportListTitleSeek' : 'trade.exportListTitleOffer'
+    const text = generateWhatsAppText(
+      lists,
+      {
+        listTitle: t(titleKey),
+        seekHeader: (n) => t('trade.exportSeek', { n }),
+        offerHeader: (n) => t('trade.exportOffer', { n }),
+        empty: t('trade.exportEmpty'),
+        footer: (url) => t('trade.exportFooter', { url }),
+      },
+      { only: tab },
+    )
     const result = await shareText({ title: t('trade.shareTitle'), text })
     if (result.method === 'native') {
       show(t('trade.sharedNative'), 'success')

@@ -21,25 +21,42 @@ export interface WhatsAppLabels {
   footer: (url: string) => string
 }
 
+export interface WhatsAppOptions {
+  /**
+   * Limit the output to a single side. Default is 'both' (used by CSV-style
+   * full exports). The Share button passes the currently active tab so the
+   * recipient sees only the list the sender meant to show.
+   */
+  only?: 'seek' | 'offer' | 'both'
+  baseUrl?: string
+}
+
 // ─── WhatsApp-friendly text ───────────────────────────────────────────────
 
 export function generateWhatsAppText(
   lists: SeekOfferLists,
   labels: WhatsAppLabels,
-  baseUrl: string = window.location.origin + window.location.pathname,
+  options: WhatsAppOptions = {},
 ): string {
+  const only = options.only ?? 'both'
+  const baseUrl =
+    options.baseUrl ?? window.location.origin + window.location.pathname
+
   const lines: string[] = []
   lines.push(labels.listTitle)
   lines.push('')
 
-  if (lists.totalSeek > 0) {
+  const includeSeek = (only === 'both' || only === 'seek') && lists.totalSeek > 0
+  const includeOffer = (only === 'both' || only === 'offer') && lists.totalOffer > 0
+
+  if (includeSeek) {
     lines.push(labels.seekHeader(lists.totalSeek))
     const codes = lists.seek.flatMap((g) => g.items.map((s) => s.id))
     lines.push(codes.join(', '))
     lines.push('')
   }
 
-  if (lists.totalOffer > 0) {
+  if (includeOffer) {
     lines.push(labels.offerHeader(lists.totalOffer))
     const codes = lists.offer.flatMap((g) => {
       return g.items.map((s) => {
@@ -51,7 +68,7 @@ export function generateWhatsAppText(
     lines.push('')
   }
 
-  if (!lists.totalSeek && !lists.totalOffer) {
+  if (!includeSeek && !includeOffer) {
     lines.push(labels.empty)
   }
 
