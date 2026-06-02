@@ -112,6 +112,9 @@ const DE = {
   'teams.filterInProgress': 'In Arbeit',
   'teams.filterEmpty': 'Noch nichts',
   'teams.notFound': 'Keine Teams gefunden.',
+  'teams.sortGroup': 'Gruppen',
+  'teams.sortAlpha': 'A–Z',
+  'teams.specialHeader': 'Spezial',
   'teams.groupHeader': 'Gruppe {letter}',
 
   // ── Team detail ────────────────────────────────────────────────────────
@@ -473,6 +476,9 @@ const EN: Record<MessageKey, string> = {
   'teams.filterInProgress': 'In progress',
   'teams.filterEmpty': 'Empty',
   'teams.notFound': 'No teams found.',
+  'teams.sortGroup': 'Groups',
+  'teams.sortAlpha': 'A–Z',
+  'teams.specialHeader': 'Specials',
   'teams.groupHeader': 'Group {letter}',
 
   // ── Team detail ────────────────────────────────────────────────────────
