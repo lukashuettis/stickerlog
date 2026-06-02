@@ -51,7 +51,14 @@ export default defineConfig({
     injectCsp(),
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      // 'prompt' (not 'autoUpdate'): the new SW enters the waiting state
+      // instead of activating instantly. That's the only mode where
+      // useRegisterSW's `needRefresh` flag fires, which is what drives our
+      // PWAUpdate banner. With autoUpdate, skipWaiting is enabled and the
+      // banner never shows — confirmed by testers on iOS + Android.
+      // The banner button calls updateServiceWorker(true), which sends
+      // skipWaiting() to the waiting SW and reloads the page.
+      registerType: 'prompt',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'og-image.png'],
       manifest: {
         name: 'StickerLog',
