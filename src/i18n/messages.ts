@@ -169,6 +169,206 @@ const DE = {
   'trade.exportListTitleOffer': '🤝 Diese Sticker biete ich',
   'trade.shareEmptySeek': 'Du suchst aktuell keine Sticker — nichts zu teilen.',
   'trade.shareEmptyOffer': 'Du hast aktuell keine Duplikate — nichts zu teilen.',
+
+  // ── Tausch-Check (signature feature) ───────────────────────────────────
+  'tradecheck.card.title': 'Tausch-Check',
+  'tradecheck.card.body': 'Finde sofort heraus, ob sich ein Tausch lohnt.',
+  'tradecheck.card.start': 'Tausch-Check starten',
+  'tradecheck.card.share': 'Meine Tauschliste teilen',
+
+  'tradecheck.start.title': 'Tausch-Check starten',
+  'tradecheck.start.subtitle': 'Wie kommt die Liste der anderen Person zu dir?',
+  'tradecheck.start.scan': 'QR-Code scannen',
+  'tradecheck.start.scanHint': 'Direkt vom anderen Handy',
+  'tradecheck.start.paste': 'Liste oder Link einfügen',
+  'tradecheck.start.pasteHint': 'Aus WhatsApp, Mail oder Notizen',
+
+  'tradecheck.share.title': 'Meine Tauschliste teilen',
+  'tradecheck.share.subtitle':
+    'Enthält deine gesuchten Sticker und deine Doppelten. Jeder mit dem Link kann diese Liste sehen. Namen und Käufe werden nicht geteilt.',
+  'tradecheck.share.whatsapp': 'Per WhatsApp / Mail teilen',
+  'tradecheck.share.copyLink': 'Link kopieren',
+  'tradecheck.share.qr': 'Meinen QR-Code zeigen',
+  'tradecheck.share.copyText': 'Tauschliste als Text kopieren',
+  'tradecheck.share.linkCopied': 'Link kopiert',
+  'tradecheck.share.textCopied': 'Text kopiert',
+  'tradecheck.share.empty':
+    'Du suchst nichts und bietest nichts — füll erst Sticker ein, dann hat ein Tausch-Check Sinn.',
+  'tradecheck.share.body':
+    '🤝 Mein Tausch-Check\n\nApp öffnen oder Link einfügen:\n{url}',
+
+  'tradecheck.qr.title': 'QR-Code',
+  'tradecheck.qr.subtitle': 'Mit anderem Handy scannen',
+  'tradecheck.qr.generating': 'QR-Code wird erstellt …',
+  'tradecheck.qr.scanTitle': 'QR-Code scannen',
+  'tradecheck.qr.permissionDenied':
+    'Kamera-Zugriff abgelehnt. Du kannst den Link stattdessen einfügen.',
+  'tradecheck.qr.noCamera': 'Keine Kamera gefunden.',
+  'tradecheck.qr.scanError': 'QR-Code konnte nicht gelesen werden.',
+  'tradecheck.qr.cancel': 'Abbrechen',
+
+  'tradecheck.paste.title': 'Liste oder Link einfügen',
+  'tradecheck.paste.placeholder':
+    'WhatsApp-Nachricht, Link oder einfach „GER-3, FRA-5, BRA-7“ reinkopieren …',
+  'tradecheck.paste.detectedNothing': 'Noch nichts erkannt',
+  'tradecheck.paste.detected': 'Erkannt: {seek} gesuchte · {offer} angebotene Sticker',
+  'tradecheck.paste.detectedGive': '1 Sticker erkannt',
+  'tradecheck.paste.detectedGiveN': '{n} Sticker erkannt',
+  'tradecheck.paste.invalid': '{n} unbekannte Codes — wir ignorieren sie',
+  'tradecheck.paste.start': 'Abgleich starten',
+  'tradecheck.paste.empty':
+    'Keine Sticker-Codes erkannt. Format: GER-3, FRA-5 …',
+
+  'tradecheck.result.title': 'Tausch-Check',
+  'tradecheck.result.emotion.great': '🎉 Das sieht gut aus!',
+  'tradecheck.result.emotion.good': '👍 Da ist etwas dabei',
+  'tradecheck.result.emotion.oneSidedMe': 'Für dich sind Sticker dabei',
+  'tradecheck.result.emotion.oneSidedThem': 'Du kannst weiterhelfen',
+  'tradecheck.result.emotion.none': 'Aktuell kein direkter Treffer',
+  'tradecheck.result.summary': '{forMe} für dich · {forThem} für die andere Person',
+  'tradecheck.result.forMe': 'Für dich ({n})',
+  'tradecheck.result.forThem': 'Für die andere Person ({n})',
+  'tradecheck.result.irrelevant': 'Schon vorhanden / nicht relevant ({n})',
+  'tradecheck.result.alreadyHave': 'Hast du schon ({n})',
+  'tradecheck.result.cantOffer': 'Hast du nur einmal ({n})',
+  'tradecheck.result.theyHave': 'sie hat {n}×',
+  'tradecheck.result.youHave': 'du hast {n}×',
+  'tradecheck.result.propose': 'Vorschlag teilen',
+  'tradecheck.result.complete': 'Als erledigt speichern',
+  'tradecheck.result.noneCta': 'Zurück zur Tausch-Seite',
+
+  'tradecheck.public.title': 'Geteilte Tauschliste',
+  'tradecheck.public.proposalTitle': 'Tauschvorschlag',
+  'tradecheck.public.summary': '{offer} Sticker im Angebot · {seek} Sticker gesucht',
+  'tradecheck.public.proposalSummary': 'Ein konkreter Vorschlag für euren Tausch',
+  'tradecheck.public.tabSeek': 'Gesucht ({n})',
+  'tradecheck.public.tabOffer': 'Angebot ({n})',
+  'tradecheck.public.proposalYouGet': 'Du bekommst ({n})',
+  'tradecheck.public.proposalYouGive': 'Du gibst ab ({n})',
+  'tradecheck.public.startCta': 'Eigene Sammlung starten',
+  'tradecheck.public.startBody':
+    'Die Tauschliste bleibt gespeichert. Sobald du Sticker eingetragen hast, kannst du den Abgleich fortsetzen.',
+  'tradecheck.public.firstStickerCta': 'Ersten Sticker eintragen',
+  'tradecheck.public.firstStickerBody':
+    'Die Tauschliste bleibt gespeichert. Trage deinen ersten Sticker ein — danach kannst du sie mit deiner Sammlung abgleichen.',
+  'tradecheck.public.iosHintTitle': 'StickerLog schon installiert?',
+  'tradecheck.public.iosHintBody':
+    'Kopiere den Link und füge ihn in der App unter Tausch → Tausch-Check ein.',
+  'tradecheck.public.copyLink': 'Link kopieren',
+
+  'tradecheck.error.title': 'Tausch-Liste ungültig',
+  'tradecheck.error.body':
+    'Diese Liste konnte nicht gelesen werden. Bitte die andere Person um einen frischen Link.',
+  'tradecheck.error.versionTitle': 'Andere App-Version',
+  'tradecheck.error.versionBody':
+    'Diese Liste ist für eine andere Version der App. Bitte um einen aktuellen Link.',
+
+  'tradecheck.proposal.title': 'Tauschvorschlag',
+  'tradecheck.proposal.summary': '{youGet} bekommst du · {youGive} gibst du',
+  'tradecheck.proposal.youGet': 'Du bekommst ({n})',
+  'tradecheck.proposal.youGive': 'Du gibst ab ({n})',
+  'tradecheck.proposal.shareBody':
+    'Mein Tauschvorschlag:\nDu bekommst: {youGet}\nIch bekomme: {iGet}\nDetails öffnen: {url}',
+  'tradecheck.proposal.shareEmpty':
+    'Wähle erst aus, was du bekommen und was du geben möchtest.',
+  'tradecheck.proposal.accept': 'Ich nehme diesen Vorschlag',
+  'tradecheck.proposal.counter': 'Gegenvorschlag erstellen',
+
+  'tradecheck.complete.title': 'Tausch eintragen',
+  'tradecheck.complete.youGet': 'Du bekommst ({n})',
+  'tradecheck.complete.youGive': 'Du gibst ab ({n})',
+  'tradecheck.complete.counterparty': 'Mit wem? (optional)',
+  'tradecheck.complete.counterpartyPh': 'z. B. Bruder',
+  'tradecheck.complete.notes': 'Notiz (optional)',
+  'tradecheck.complete.notesPh': 'z. B. „WM-Treffen Klassenraum"',
+  'tradecheck.complete.warnLastTitle': 'Letztes Exemplar',
+  'tradecheck.complete.warnLastBody':
+    'Diese Sticker sind jeweils dein letztes Exemplar: {ids}. Trotzdem abgeben?',
+  'tradecheck.complete.confirm': 'Tausch speichern',
+  'tradecheck.complete.cancel': 'Abbrechen',
+  'tradecheck.complete.saved': 'Tausch gespeichert · {inN} bekommen, {outN} abgegeben',
+  'tradecheck.complete.errorStock':
+    'Du hast nicht genug von: {ids}. Bestände gegenchecken.',
+
+  'tradecheck.pending.bannerTitle': 'Du hast noch eine Tauschliste offen.',
+  'tradecheck.pending.bannerBody':
+    'Vergleiche sie mit deiner Sammlung, sobald du Sticker eingetragen hast.',
+  'tradecheck.pending.bannerNow': 'Jetzt abgleichen',
+  'tradecheck.pending.bannerLater': 'Später',
+  'tradecheck.pending.tradeHintTitle': 'Offene Tauschliste',
+  'tradecheck.pending.tradeHintCta': 'Jetzt abgleichen',
+  'tradecheck.pending.firstStickerToast':
+    'Deine offene Tauschliste ist bereit für den Abgleich.',
+  'tradecheck.qr.tryPaste': 'Liste oder Link einfügen',
+  'tradecheck.qr.qrError':
+    'QR-Code konnte nicht erzeugt werden. Nutze stattdessen Link kopieren.',
+  'tradecheck.qr.qrLoading': 'QR-Code wird vorbereitet …',
+
+  // ── Recent trades on TradePage ─────────────────────────────────────────
+  'trades.recent.title': 'Letzte Vorgänge',
+  'trades.recent.viewAll': 'Alle anzeigen',
+  'trades.recent.empty': 'Noch keine Vorgänge eingetragen',
+  'trades.recent.trade': '{inN} bekommen · {outN} abgegeben',
+  'trades.recent.tradeWith': 'Tausch mit {who}',
+  'trades.recent.gift': '{n} verschenkt',
+  'trades.recent.giftTo': 'Verschenkt an {who}',
+  'trades.recent.correction': 'Bestandskorrektur · {n} entfernt',
+  'trades.recent.undo': 'Rückgängig',
+  'trades.recent.undoConfirm': 'Diesen Eintrag wirklich rückgängig machen?',
+  'trades.recent.undone': 'Eintrag entfernt',
+
+  // ── Give-away sheet ────────────────────────────────────────────────────
+  'give.cta': 'Sticker abgeben',
+  'give.title': 'Sticker abgeben',
+  'give.type.gift': 'Verschenken',
+  'give.type.correction': 'Aus Sammlung entfernen',
+  'give.type.correctionHint': 'Zum Beispiel falsch eingetragen oder verloren.',
+  'give.type.trade': 'Tausch',
+  'give.type.tradeHint': 'Öffnet den Tausch-Check',
+  'give.stickers': 'Welche Sticker?',
+  'give.stickersPh': 'GER-3, FRA-5 …',
+  'give.counterparty': 'An wen? (optional)',
+  'give.counterpartyPh': 'z. B. Bruder',
+  'give.notes': 'Notiz (optional)',
+  'give.confirm': 'Speichern',
+  'give.cancel': 'Abbrechen',
+  'give.savedGift': '{n} verschenkt',
+  'give.savedCorrection': 'Bestand korrigiert',
+  'give.warnLastTitle': 'Letztes Exemplar',
+  'give.warnLastBody':
+    'Diese Sticker sind jeweils dein letztes Exemplar: {ids}. Trotzdem abgeben?',
+  'give.errorStock': 'Du hast nicht genug von: {ids}.',
+
+  // ── More menu under share/CSV ─────────────────────────────────────────
+  'trade.more': 'Mehr',
+  'trade.moreCsv': 'CSV-Datei herunterladen',
+
+  // ── History page ──────────────────────────────────────────────────────
+  'history.title': 'Verlauf',
+  'history.subtitle': 'Deine Käufe, Tausche und Abgaben',
+  'history.filterAll': 'Alle',
+  'history.filterPurchases': 'Käufe',
+  'history.filterTrades': 'Tausche',
+  'history.filterGifts': 'Verschenkt',
+  'history.filterMore': 'Mehr',
+  'history.filterCorrections': 'Korrekturen',
+
+  // ── Release notes ──────────────────────────────────────────────────────
+  'rn.banner.title': 'Was ist neu in v{version}',
+  'rn.banner.cta': 'Details',
+  'rn.sheet.gotIt': 'Verstanden',
+  'rn.0_2_0.title': 'Tausch-Check ist da',
+  'rn.0_2_0.tagline': 'Listen abgleichen, QR scannen, Verlauf — und mehr',
+  'rn.0_2_0.h1':
+    'Tausch-Check: Liste der anderen Person einfügen oder QR-Code scannen. Die App matcht sofort mit deiner Sammlung.',
+  'rn.0_2_0.h2':
+    'Tauschvorschläge teilen und mit einem Tap eintragen — die Bestände werden automatisch korrigiert.',
+  'rn.0_2_0.h3':
+    'Verschenken und Bestandskorrekturen direkt im Tausch-Bereich. Verlauf zeigt alles chronologisch.',
+  'rn.0_2_0.h4':
+    'PWA-Update-Banner funktioniert jetzt zuverlässig — du kriegst kommende Versionen mit, ohne neu installieren zu müssen.',
+  'rn.0_2_0.h5':
+    'Onboarding-Slide und Settings-Button für die App-Installation — schneller Zugriff für deine Mit-Sammler:innen.',
   'trade.exportSeek': '📥 Ich suche ({n}):',
   'trade.exportOffer': '📤 Ich biete ({n}):',
   'trade.exportEmpty': '(noch keine Sticker erfasst)',
@@ -265,11 +465,11 @@ const DE = {
   'settings.resetToast': 'Alle Daten gelöscht',
   'settings.groupApp': 'App',
   'settings.about': 'Über diese App',
-  'settings.aboutSubtitle': 'Version 0.1.2',
+  'settings.aboutSubtitle': 'Version 0.2.0',
   'settings.github': 'Open Source auf GitHub',
   'settings.githubToast': 'GitHub-Link kommt sobald veröffentlicht',
   'settings.disclaimer': 'Inoffizielles Fan-Projekt · nicht verbunden mit Panini oder FIFA',
-  'settings.footer': 'Made by Lukas Hüttis · Open Source · MIT License · v0.1.2',
+  'settings.footer': 'Made by Lukas Hüttis · Open Source · MIT License · v0.2.0',
   'settings.impressum': 'Impressum',
   'settings.groupInstall': 'Installation',
   'install.title': 'App installieren',
@@ -537,6 +737,200 @@ const EN: Record<MessageKey, string> = {
   'trade.exportListTitleOffer': '🤝 Stickers I have to trade',
   'trade.shareEmptySeek': "You're not looking for any stickers — nothing to share.",
   'trade.shareEmptyOffer': 'You have no duplicates yet — nothing to share.',
+
+  'tradecheck.card.title': 'Trade-Check',
+  'tradecheck.card.body': 'Instantly see whether a trade is worth doing.',
+  'tradecheck.card.start': 'Start Trade-Check',
+  'tradecheck.card.share': 'Share my trade list',
+
+  'tradecheck.start.title': 'Start Trade-Check',
+  'tradecheck.start.subtitle': "How is the other person's list reaching you?",
+  'tradecheck.start.scan': 'Scan QR code',
+  'tradecheck.start.scanHint': "Right from their phone",
+  'tradecheck.start.paste': 'Paste list or link',
+  'tradecheck.start.pasteHint': 'From WhatsApp, mail, or notes',
+
+  'tradecheck.share.title': 'Share my trade list',
+  'tradecheck.share.subtitle':
+    "Contains the stickers you're looking for and your duplicates. Anyone with the link can see this list. Names and purchases are not shared.",
+  'tradecheck.share.whatsapp': 'Share via WhatsApp / Mail',
+  'tradecheck.share.copyLink': 'Copy link',
+  'tradecheck.share.qr': 'Show my QR code',
+  'tradecheck.share.copyText': 'Copy trade list as text',
+  'tradecheck.share.linkCopied': 'Link copied',
+  'tradecheck.share.textCopied': 'Text copied',
+  'tradecheck.share.empty':
+    "You're not looking for or offering anything yet — add stickers first.",
+  'tradecheck.share.body':
+    '🤝 My Trade-Check\n\nOpen the app or paste this link:\n{url}',
+
+  'tradecheck.qr.title': 'QR code',
+  'tradecheck.qr.subtitle': 'Scan with another phone',
+  'tradecheck.qr.generating': 'Generating QR code …',
+  'tradecheck.qr.scanTitle': 'Scan QR code',
+  'tradecheck.qr.permissionDenied':
+    'Camera access denied. You can paste the link instead.',
+  'tradecheck.qr.noCamera': 'No camera found.',
+  'tradecheck.qr.scanError': 'QR code could not be read.',
+  'tradecheck.qr.cancel': 'Cancel',
+
+  'tradecheck.paste.title': 'Paste list or link',
+  'tradecheck.paste.placeholder':
+    "Paste a WhatsApp message, link, or just 'GER-3, FRA-5, BRA-7' …",
+  'tradecheck.paste.detectedNothing': 'Nothing detected yet',
+  'tradecheck.paste.detected': 'Detected: {seek} wanted · {offer} offered stickers',
+  'tradecheck.paste.detectedGive': '1 sticker detected',
+  'tradecheck.paste.detectedGiveN': '{n} stickers detected',
+  'tradecheck.paste.invalid': '{n} unknown codes — we ignore them',
+  'tradecheck.paste.start': 'Run check',
+  'tradecheck.paste.empty':
+    "No sticker codes detected. Format: GER-3, FRA-5 …",
+
+  'tradecheck.result.title': 'Trade-Check',
+  'tradecheck.result.emotion.great': '🎉 Looks good!',
+  'tradecheck.result.emotion.good': "👍 There's something here",
+  'tradecheck.result.emotion.oneSidedMe': 'There are stickers for you',
+  'tradecheck.result.emotion.oneSidedThem': 'You can help them',
+  'tradecheck.result.emotion.none': 'No direct match right now',
+  'tradecheck.result.summary': '{forMe} for you · {forThem} for the other person',
+  'tradecheck.result.forMe': 'For you ({n})',
+  'tradecheck.result.forThem': 'For the other person ({n})',
+  'tradecheck.result.irrelevant': 'Already owned / not relevant ({n})',
+  'tradecheck.result.alreadyHave': 'You already have ({n})',
+  'tradecheck.result.cantOffer': 'You have only one ({n})',
+  'tradecheck.result.theyHave': 'they have {n}×',
+  'tradecheck.result.youHave': 'you have {n}×',
+  'tradecheck.result.propose': 'Share proposal',
+  'tradecheck.result.complete': 'Save as completed',
+  'tradecheck.result.noneCta': 'Back to trade page',
+
+  'tradecheck.public.title': 'Shared trade list',
+  'tradecheck.public.proposalTitle': 'Trade proposal',
+  'tradecheck.public.summary': '{offer} stickers offered · {seek} stickers wanted',
+  'tradecheck.public.proposalSummary': 'A concrete proposal for your trade',
+  'tradecheck.public.tabSeek': 'Wanted ({n})',
+  'tradecheck.public.tabOffer': 'Offered ({n})',
+  'tradecheck.public.proposalYouGet': 'You get ({n})',
+  'tradecheck.public.proposalYouGive': 'You give ({n})',
+  'tradecheck.public.startCta': 'Start my collection',
+  'tradecheck.public.startBody':
+    "The trade list stays saved. Once you've entered some stickers, you can continue the match.",
+  'tradecheck.public.firstStickerCta': 'Add first sticker',
+  'tradecheck.public.firstStickerBody':
+    "The trade list stays saved. Add your first sticker — then you can match it against your collection.",
+  'tradecheck.public.iosHintTitle': 'Already have StickerLog installed?',
+  'tradecheck.public.iosHintBody':
+    'Copy the link and paste it in the app under Trade → Trade-Check.',
+  'tradecheck.public.copyLink': 'Copy link',
+
+  'tradecheck.error.title': 'Invalid trade list',
+  'tradecheck.error.body':
+    "This list couldn't be read. Ask the other person for a fresh link.",
+  'tradecheck.error.versionTitle': 'Different app version',
+  'tradecheck.error.versionBody':
+    'This list is for a different version of the app. Ask for an updated link.',
+
+  'tradecheck.proposal.title': 'Trade proposal',
+  'tradecheck.proposal.summary': '{youGet} for you · {youGive} from you',
+  'tradecheck.proposal.youGet': 'You get ({n})',
+  'tradecheck.proposal.youGive': 'You give ({n})',
+  'tradecheck.proposal.shareBody':
+    'My trade proposal:\nYou get: {youGet}\nI get: {iGet}\nDetails: {url}',
+  'tradecheck.proposal.shareEmpty':
+    'First pick what you want to get and give.',
+  'tradecheck.proposal.accept': "I'll take this trade",
+  'tradecheck.proposal.counter': 'Make a counter-offer',
+
+  'tradecheck.complete.title': 'Save trade',
+  'tradecheck.complete.youGet': 'You get ({n})',
+  'tradecheck.complete.youGive': 'You give ({n})',
+  'tradecheck.complete.counterparty': 'With whom? (optional)',
+  'tradecheck.complete.counterpartyPh': 'e.g. Brother',
+  'tradecheck.complete.notes': 'Notes (optional)',
+  'tradecheck.complete.notesPh': 'e.g. "Trade meet-up at school"',
+  'tradecheck.complete.warnLastTitle': 'Last copy',
+  'tradecheck.complete.warnLastBody':
+    "These are each your last copy: {ids}. Trade them anyway?",
+  'tradecheck.complete.confirm': 'Save trade',
+  'tradecheck.complete.cancel': 'Cancel',
+  'tradecheck.complete.saved': 'Trade saved · {inN} received, {outN} given',
+  'tradecheck.complete.errorStock':
+    "You don't have enough of: {ids}. Check your stock.",
+
+  'tradecheck.pending.bannerTitle': 'You have a trade list pending.',
+  'tradecheck.pending.bannerBody':
+    "Match it against your collection once you've entered some stickers.",
+  'tradecheck.pending.bannerNow': 'Match now',
+  'tradecheck.pending.bannerLater': 'Later',
+  'tradecheck.pending.tradeHintTitle': 'Pending trade list',
+  'tradecheck.pending.tradeHintCta': 'Match now',
+  'tradecheck.pending.firstStickerToast':
+    'Your pending trade list is ready to be matched.',
+  'tradecheck.qr.tryPaste': 'Paste list or link',
+  'tradecheck.qr.qrError':
+    "Couldn't generate QR code. Use Copy link instead.",
+  'tradecheck.qr.qrLoading': 'Preparing QR code …',
+
+  'trades.recent.title': 'Recent activity',
+  'trades.recent.viewAll': 'View all',
+  'trades.recent.empty': 'No activity yet',
+  'trades.recent.trade': '{inN} received · {outN} given',
+  'trades.recent.tradeWith': 'Trade with {who}',
+  'trades.recent.gift': '{n} gifted',
+  'trades.recent.giftTo': 'Gifted to {who}',
+  'trades.recent.correction': 'Inventory correction · {n} removed',
+  'trades.recent.undo': 'Undo',
+  'trades.recent.undoConfirm': 'Really undo this entry?',
+  'trades.recent.undone': 'Entry removed',
+
+  'give.cta': 'Give away',
+  'give.title': 'Give stickers away',
+  'give.type.gift': 'Gift',
+  'give.type.correction': 'Remove from collection',
+  'give.type.correctionHint': 'For example entered by mistake or lost.',
+  'give.type.trade': 'Trade',
+  'give.type.tradeHint': 'Opens Trade-Check',
+  'give.stickers': 'Which stickers?',
+  'give.stickersPh': 'GER-3, FRA-5 …',
+  'give.counterparty': 'To whom? (optional)',
+  'give.counterpartyPh': 'e.g. Brother',
+  'give.notes': 'Notes (optional)',
+  'give.confirm': 'Save',
+  'give.cancel': 'Cancel',
+  'give.savedGift': '{n} gifted',
+  'give.savedCorrection': 'Inventory corrected',
+  'give.warnLastTitle': 'Last copy',
+  'give.warnLastBody':
+    "These are each your last copy: {ids}. Give them away anyway?",
+  'give.errorStock': "You don't have enough of: {ids}.",
+
+  'trade.more': 'More',
+  'trade.moreCsv': 'Download CSV file',
+
+  'history.title': 'History',
+  'history.subtitle': 'Your purchases, trades, and giveaways',
+  'history.filterAll': 'All',
+  'history.filterPurchases': 'Purchases',
+  'history.filterTrades': 'Trades',
+  'history.filterGifts': 'Gifts',
+  'history.filterMore': 'More',
+  'history.filterCorrections': 'Corrections',
+
+  'rn.banner.title': "What's new in v{version}",
+  'rn.banner.cta': 'Details',
+  'rn.sheet.gotIt': 'Got it',
+  'rn.0_2_0.title': 'Trade-Check is here',
+  'rn.0_2_0.tagline': 'Match lists, scan QR, history — and more',
+  'rn.0_2_0.h1':
+    "Trade-Check: paste the other person's list or scan their QR code. The app instantly matches against your collection.",
+  'rn.0_2_0.h2':
+    'Share trade proposals and log them with one tap — your stock updates automatically.',
+  'rn.0_2_0.h3':
+    'Gifts and inventory corrections live in the trade area now. History shows everything chronologically.',
+  'rn.0_2_0.h4':
+    "PWA update banner now actually fires — you'll see future updates without having to reinstall.",
+  'rn.0_2_0.h5':
+    'New onboarding slide and a Settings install button — quick install path for your fellow collectors.',
   'trade.exportSeek': '📥 I seek ({n}):',
   'trade.exportOffer': '📤 I offer ({n}):',
   'trade.exportEmpty': '(no stickers entered yet)',
@@ -632,11 +1026,11 @@ const EN: Record<MessageKey, string> = {
   'settings.resetToast': 'All data deleted',
   'settings.groupApp': 'App',
   'settings.about': 'About this app',
-  'settings.aboutSubtitle': 'Version 0.1.2',
+  'settings.aboutSubtitle': 'Version 0.2.0',
   'settings.github': 'Open source on GitHub',
   'settings.githubToast': 'GitHub link coming once published',
   'settings.disclaimer': 'Unofficial fan project · not affiliated with Panini or FIFA',
-  'settings.footer': 'Made by Lukas Hüttis · Open source · MIT License · v0.1.2',
+  'settings.footer': 'Made by Lukas Hüttis · Open source · MIT License · v0.2.0',
   'settings.impressum': 'Impressum',
   'settings.groupInstall': 'Install',
   'install.title': 'Install app',

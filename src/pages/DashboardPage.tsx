@@ -16,6 +16,8 @@ import {
   useOwnedMap,
 } from '@/hooks/useCollection'
 import { ALBUM_TOTAL } from '@/lib/stats'
+import { ReleaseNoteBanner } from '@/components/ReleaseNoteBanner'
+import { PendingPayloadBanner } from '@/components/PendingPayloadBanner'
 import { ALBUM, findStickerByCode } from '@/data/album'
 import { NATIONAL_TEAMS, findTeamByCode, teamName } from '@/data/teams'
 import { downloadBackup } from '@/lib/backup'
@@ -112,6 +114,16 @@ export function DashboardPage() {
           </Button>
         </div>
       </div>
+
+      {/* Pending shared-list banner — wins if both would render at once.
+          A user with a fresh trade-check link to follow up on cares more
+          about that than about release notes. */}
+      <PendingPayloadBanner />
+
+      {/* Release notes banner — only renders if the user has data and there's
+          a version bump since the last visit. Brand-new installs are silently
+          aligned (see lib/releaseNotes). */}
+      <ReleaseNoteBanner hasCollection={stats.ownedCount > 0} />
 
       <div className="px-5 pt-2 lg:px-0 lg:pt-0 lg:mb-5">
         <Card className="p-5 lg:p-6 bg-gradient-to-br from-card to-muted">

@@ -137,6 +137,19 @@ export function OpenPackPage() {
     }
     const count = bonusValid > 0 ? regularValid + bonusValid : regularValid
     show(t('capture.savedToast', { n: count, price: `${priceInput} €` }))
+    // First-sticker bonus: if a shared trade list was waiting for the user,
+    // surface a one-time toast so they know it's now ready to be matched.
+    // The Dashboard banner still handles the canonical re-entry.
+    try {
+      // Lazy-import to keep the OpenPackPage bundle lean.
+      const { getPendingPayload } = await import('@/lib/pendingPayload')
+      if (getPendingPayload()) {
+        // Toast displays after the save toast — short delay so it isn't trampled.
+        setTimeout(() => show(t('tradecheck.pending.firstStickerToast'), 'info'), 600)
+      }
+    } catch {
+      // ignore
+    }
     navigate('/')
   }
 

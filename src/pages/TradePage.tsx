@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Share2, FileText } from 'lucide-react'
+import { FileText, MoreHorizontal, HandHeart } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { TopBar } from '@/components/ui/TopBar'
@@ -11,13 +11,15 @@ import { findTeamByCode, TEAMS, teamName } from '@/data/teams'
 import {
   downloadBlob,
   generateCsv,
-  generateWhatsAppText,
-  shareText,
   type SeekOfferLists,
   type TradeListGroup,
 } from '@/lib/export'
 import { useI18n } from '@/i18n/I18nProvider'
 import { cn } from '@/lib/cn'
+import { TauschCheckCard } from '@/components/trade/TauschCheckCard'
+import { RecentTrades } from '@/components/trade/RecentTrades'
+import { GiveAwaySheet } from '@/components/trade/GiveAwaySheet'
+import { PendingPayloadHint } from '@/components/PendingPayloadHint'
 
 type Tab = 'seek' | 'offer'
 
@@ -62,51 +64,28 @@ export function TradePage() {
   const activeGroups: Array<TradeListGroup & { dupCounts?: Map<string, number> }> =
     tab === 'seek' ? lists.seek : lists.offer
 
-  const handleShare = async () => {
-    // Respect the active tab: brother shared the "offer" tab but the share
-    // text used to include both lists with seek on top, so the recipient
-    // (Lukas) saw the seek list and thought that was all of it. Now we
-    // only send what the user is actually looking at.
-    const activeTotal = tab === 'seek' ? lists.totalSeek : lists.totalOffer
-    if (activeTotal === 0) {
-      show(tab === 'seek' ? t('trade.shareEmptySeek') : t('trade.shareEmptyOffer'), 'info')
-      return
-    }
-
-    const titleKey =
-      tab === 'seek' ? 'trade.exportListTitleSeek' : 'trade.exportListTitleOffer'
-    const text = generateWhatsAppText(
-      lists,
-      {
-        listTitle: t(titleKey),
-        seekHeader: (n) => t('trade.exportSeek', { n }),
-        offerHeader: (n) => t('trade.exportOffer', { n }),
-        empty: t('trade.exportEmpty'),
-        footer: (url) => t('trade.exportFooter', { url }),
-      },
-      { only: tab },
-    )
-    const result = await shareText({ title: t('trade.shareTitle'), text })
-    if (result.method === 'native') {
-      show(t('trade.sharedNative'), 'success')
-    } else if (result.method === 'clipboard') {
-      show(t('trade.sharedClipboard'), 'success')
-    } else if (result.method === 'failed') {
-      show(t('trade.shareFailed'), 'error')
-    }
-    // 'cancelled' = user dismissed the native sheet → no toast (silent UX)
-  }
+  const [moreOpen, setMoreOpen] = useState(false)
+  const [giveOpen, setGiveOpen] = useState(false)
 
   const handleDownloadCsv = () => {
     const csv = generateCsv(lists)
     const filename = `sticker-trade-${new Date().toISOString().slice(0, 10)}.csv`
     downloadBlob(csv, filename, 'text/csv')
     show(t('trade.csvDownloaded'))
+    setMoreOpen(false)
   }
 
   return (
-    <div className="pb-44">
+    <div className="pb-32">
       <TopBar large title={t('trade.title')} subtitle={t('trade.subtitle')} />
+
+      {/* Pending re-entry hint — shows if a shared list is still waiting */}
+      <PendingPayloadHint />
+
+      {/* Signature: Tausch-Check card */}
+      <div className="pt-1 pb-3">
+        <TauschCheckCard lists={lists} />
+      </div>
 
       {/* Tab switcher */}
       <div className="px-5">
@@ -185,27 +164,46 @@ export function TradePage() {
         )}
       </div>
 
-      {/* Sticky export footer.
-          - Mobile: docked above the BottomNav, full width.
-          - Desktop: in-flow at the bottom of the content card (no Bottom-Nav).
-          On mobile the Share button opens the native iOS/Android share sheet
-          (WhatsApp, Mail, etc.). On desktop without Web Share it falls back
-          to clipboard so the user can paste into any chat app. */}
-      <div className="fixed inset-x-0 bottom-[72px] z-20 px-4 py-3 bg-card/90 backdrop-blur-xl border-t border-border flex flex-col gap-2 lg:static lg:inset-auto lg:px-0 lg:bg-transparent lg:border-0 lg:backdrop-blur-0 lg:mt-6">
-        <div className="grid grid-cols-2 gap-2">
-          <Button size="md" icon={<Share2 size={18} />} onClick={handleShare}>
-            {t('trade.share')}
-          </Button>
+      {/* Recent trades preview + secondary actions */}
+      <div className="pt-4 space-y-4">
+        <RecentTrades />
+
+        <div className="px-5 lg:px-0 grid grid-cols-2 gap-2">
           <Button
             variant="outline"
             size="md"
-            icon={<FileText size={18} />}
-            onClick={handleDownloadCsv}
+            icon={<HandHeart size={16} />}
+            onClick={() => setGiveOpen(true)}
           >
-            {t('trade.exportCsv')}
+            {t('give.cta')}
+          </Button>
+          <Button
+            variant="ghost"
+            size="md"
+            icon={<MoreHorizontal size={16} />}
+            onClick={() => setMoreOpen((v) => !v)}
+          >
+            {t('trade.more')}
           </Button>
         </div>
+
+        {moreOpen && (
+          <div className="px-5 lg:px-0">
+            <Card padded={false} className="overflow-hidden">
+              <button
+                type="button"
+                onClick={handleDownloadCsv}
+                className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-muted"
+              >
+                <FileText size={18} className="text-muted-foreground" />
+                <span className="text-sm font-semibold">{t('trade.moreCsv')}</span>
+              </button>
+            </Card>
+          </div>
+        )}
       </div>
+
+      <GiveAwaySheet open={giveOpen} onClose={() => setGiveOpen(false)} />
     </div>
   )
 }

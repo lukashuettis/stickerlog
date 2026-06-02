@@ -341,6 +341,170 @@ export async function removeOneCorrection(
   )
 }
 
+// ─── Trade / Gift / Correction events with stock validation ─────────────
+
+export class NegativeStockError extends Error {
+  readonly stickerIds: string[]
+  constructor(stickerIds: string[]) {
+    super(`Cannot remove stickers below zero: ${stickerIds.join(', ')}`)
+    this.name = 'NegativeStockError'
+    this.stickerIds = stickerIds
+  }
+}
+
+/**
+ * Check current owned count for a (catalog, id). Reads from collectionCache.
+ */
+export async function getOwnedCount(
+  catalog: StickerCatalog,
+  stickerId: string,
+): Promise<number> {
+  const row = await db.collectionCache.get([catalog, stickerId])
+  return row?.count ?? 0
+}
+
+/**
+ * Return the subset of stickerIds whose current owned count is exactly 1.
+ * Used by the "last copy" warning before saving an outgoing event.
+ */
+export async function findLastCopies(
+  catalog: StickerCatalog,
+  stickerIds: string[],
+): Promise<string[]> {
+  const out: string[] = []
+  for (const id of stickerIds) {
+    const c = await getOwnedCount(catalog, id)
+    if (c === 1) out.push(id)
+  }
+  return out
+}
+
+/**
+ * Validate that an outgoing batch does not exceed owned stock.
+ *
+ * outBatch maps (catalog, id) → count we want to remove. We compare against
+ * the current cache and surface ids that would go negative.
+ */
+async function assertCanRemove(
+  outBatch: Array<{ catalog: StickerCatalog; id: string; n: number }>,
+): Promise<void> {
+  const bad: string[] = []
+  for (const { catalog, id, n } of outBatch) {
+    const owned = await getOwnedCount(catalog, id)
+    if (owned < n) bad.push(id)
+  }
+  if (bad.length > 0) throw new NegativeStockError(bad)
+}
+
+interface TradeEventInput {
+  /** stickers I receive */
+  inItems: Array<{ catalog: StickerCatalog; id: string; kind?: ItemKind }>
+  /** stickers I give */
+  outItems: Array<{ catalog: StickerCatalog; id: string; kind?: ItemKind }>
+  counterparty?: string
+  notes?: string
+  occurredAt?: string
+}
+
+/**
+ * Create a single trade event with both incoming and outgoing items.
+ * Validates that no outgoing item would drive a balance below zero.
+ */
+export async function createTradeEvent(input: TradeEventInput): Promise<number> {
+  const outBatch = aggregateOutBatch(input.outItems)
+  await assertCanRemove(outBatch)
+  const occurredAt = input.occurredAt ?? new Date().toISOString()
+  return createEvent(
+    {
+      type: 'trade',
+      occurredAt,
+      notes: input.notes,
+      tradePartner: input.counterparty,
+    },
+    [
+      ...input.inItems.map((it) => ({
+        stickerCatalog: it.catalog,
+        stickerId: it.id,
+        itemKind: it.kind ?? 'album',
+        direction: 'in' as const,
+      })),
+      ...input.outItems.map((it) => ({
+        stickerCatalog: it.catalog,
+        stickerId: it.id,
+        itemKind: it.kind ?? 'album',
+        direction: 'out' as const,
+      })),
+    ],
+  )
+}
+
+interface GiftOutInput {
+  outItems: Array<{ catalog: StickerCatalog; id: string; kind?: ItemKind }>
+  counterparty?: string
+  notes?: string
+  occurredAt?: string
+}
+
+export async function createGiftOutEvent(input: GiftOutInput): Promise<number> {
+  const outBatch = aggregateOutBatch(input.outItems)
+  await assertCanRemove(outBatch)
+  const occurredAt = input.occurredAt ?? new Date().toISOString()
+  return createEvent(
+    {
+      type: 'gift',
+      occurredAt,
+      notes: input.notes,
+      tradePartner: input.counterparty,
+    },
+    input.outItems.map((it) => ({
+      stickerCatalog: it.catalog,
+      stickerId: it.id,
+      itemKind: it.kind ?? 'album',
+      direction: 'out' as const,
+    })),
+  )
+}
+
+interface CorrectionOutInput {
+  outItems: Array<{ catalog: StickerCatalog; id: string; kind?: ItemKind }>
+  notes?: string
+  occurredAt?: string
+}
+
+export async function createCorrectionOutEvent(
+  input: CorrectionOutInput,
+): Promise<number> {
+  const outBatch = aggregateOutBatch(input.outItems)
+  await assertCanRemove(outBatch)
+  const occurredAt = input.occurredAt ?? new Date().toISOString()
+  return createEvent(
+    {
+      type: 'correction',
+      occurredAt,
+      notes: input.notes,
+    },
+    input.outItems.map((it) => ({
+      stickerCatalog: it.catalog,
+      stickerId: it.id,
+      itemKind: it.kind ?? 'album',
+      direction: 'out' as const,
+    })),
+  )
+}
+
+function aggregateOutBatch(
+  items: Array<{ catalog: StickerCatalog; id: string }>,
+): Array<{ catalog: StickerCatalog; id: string; n: number }> {
+  const map = new Map<string, { catalog: StickerCatalog; id: string; n: number }>()
+  for (const it of items) {
+    const k = `${it.catalog}:${it.id}`
+    const entry = map.get(k)
+    if (entry) entry.n++
+    else map.set(k, { catalog: it.catalog, id: it.id, n: 1 })
+  }
+  return Array.from(map.values())
+}
+
 // ─── Settings ─────────────────────────────────────────────────────────────
 
 export async function getSetting<T = unknown>(key: string, fallback?: T): Promise<T | undefined> {

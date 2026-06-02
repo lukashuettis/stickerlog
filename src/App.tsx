@@ -13,17 +13,28 @@ import { TradePage } from './pages/TradePage'
 import { SettingsPage } from './pages/SettingsPage'
 import { StatsPage } from './pages/StatsPage'
 import { PackHistoryPage } from './pages/PackHistoryPage'
+import { HistoryPage } from './pages/HistoryPage'
+import { lazy, Suspense } from 'react'
+
+const TradeCheckPage = lazy(() =>
+  import('./pages/TradeCheckPage').then((m) => ({ default: m.TradeCheckPage })),
+)
 import { AboutPage } from './pages/AboutPage'
 import { OnboardingPage } from './pages/OnboardingPage'
 import { db, recomputeAllCaches } from './lib/db'
 
 // Routes that should NOT show app chrome (sidebar / nav).
-const NO_CHROME = new Set(['/onboarding'])
+const NO_CHROME_EXACT = new Set(['/onboarding'])
+// Path-prefix matches — covers /trade/check/<payload> for the focused match flow.
+// Shared trade lists deserve a clean focused view, not a deep sidebar/nav.
+const NO_CHROME_PREFIXES = ['/trade/check/']
 
 export function App() {
   const location = useLocation()
   const navigate = useNavigate()
-  const showChrome = !NO_CHROME.has(location.pathname)
+  const showChrome =
+    !NO_CHROME_EXACT.has(location.pathname) &&
+    !NO_CHROME_PREFIXES.some((p) => location.pathname.startsWith(p))
 
   // One-time migration: if a previous app version stored darkMode only in
   // IndexedDB (no localStorage), copy it over so the synchronous bootstrap
@@ -50,13 +61,22 @@ export function App() {
   }, [])
 
   if (!showChrome) {
-    // Onboarding: full-bleed, no chrome
+    // Onboarding + shared-list flow: full-bleed, no chrome
     return (
       <div className="min-h-screen bg-background text-foreground">
         <Routes>
           <Route path="/onboarding" element={<OnboardingPage />} />
+          <Route
+            path="/trade/check/:payload"
+            element={
+              <Suspense fallback={<div className="p-8 text-center">…</div>}>
+                <TradeCheckPage />
+              </Suspense>
+            }
+          />
         </Routes>
         <IOSInstallHint />
+        <PWAUpdate />
       </div>
     )
   }
@@ -76,6 +96,15 @@ export function App() {
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/stats" element={<StatsPage />} />
             <Route path="/packs" element={<PackHistoryPage />} />
+            <Route path="/history" element={<HistoryPage />} />
+            <Route
+              path="/trade/check/:payload"
+              element={
+                <Suspense fallback={<div className="p-8 text-center">…</div>}>
+                  <TradeCheckPage />
+                </Suspense>
+              }
+            />
             <Route path="/about" element={<AboutPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
