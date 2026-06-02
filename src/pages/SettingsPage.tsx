@@ -279,7 +279,10 @@ export function SettingsPage() {
         />
       </SettingsGroup>
 
-      <div className="px-5 pt-6 pb-4 text-center">
+      <div className="px-5 pt-6 pb-4 text-center space-y-1">
+        <div className="text-[11px] text-muted-foreground opacity-70">
+          {t('settings.disclaimer')}
+        </div>
         <div className="text-[11px] text-muted-foreground opacity-80">
           {t('settings.footer')}
           {' · '}

@@ -57,7 +57,7 @@ export default defineConfig({
         name: 'StickerLog',
         short_name: 'StickerLog',
         description:
-          'Your private, no-account tracker for the 2026 sticker album. Local-first.',
+          'An unofficial fan project. Track your 2026 World Cup sticker collection — local-first, no account, open source.',
         start_url: BASE,
         scope: BASE,
         display: 'standalone',
