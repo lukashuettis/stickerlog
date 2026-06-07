@@ -84,7 +84,20 @@ export const TEAMS: Team[] = [
 
   // Intro / FIFA Museum pseudo-team
   { code: 'FWC', name: 'Cover & Spezial', nameEn: 'Cover & Specials', group: null, confederation: 'FIFA', flagColors: ['#0a5e3e', '#ffce00', '#0a5e3e'] },
+
+  // Bonus promo set (12 stickers from a separate distribution channel,
+  // outside the printed 980-slot album). Deliberately code- and color-neutral
+  // — no brand reference. UI shows them in their own "Bonus" section.
+  { code: 'CC', name: 'CC', nameEn: 'CC', group: null, confederation: 'PROMO', flagColors: ['#1f1f1f', '#ffffff', '#1f1f1f'] },
 ]
+
+/** Team codes whose stickers don't belong to the 48 national teams (FWC = cover/specials, CC = bonus promo). */
+const SPECIAL_TEAM_CODES = new Set(['FWC', 'CC'])
+
+/** True for team codes whose stickers are NOT bought via standard packs and never count toward cost-per-sticker. */
+export function isPromoTeamCode(code: string): boolean {
+  return code === 'CC'
+}
 
 /** Resolve the team's display name for the given locale (falls back to German). */
 export function teamName(team: Team, locale: 'de' | 'en'): string {
@@ -102,4 +115,4 @@ export function findTeamByCode(code: string): Team | undefined {
 }
 
 /** All 48 national teams in album order (group A first → L last). */
-export const NATIONAL_TEAMS = TEAMS.filter((t) => t.code !== 'FWC')
+export const NATIONAL_TEAMS = TEAMS.filter((t) => !SPECIAL_TEAM_CODES.has(t.code))

@@ -91,4 +91,25 @@ describe('parseTradeText — tolerance', () => {
     const out = parseTradeText('ger 14, fra 5')
     expect(out.offer.map((o) => o.id).sort()).toEqual(['FRA-5', 'GER-14'])
   })
+
+  // CC promo stickers use a 2-letter code, which needs the parser regex to
+  // accept {2,3}-letter prefixes — the previous build only matched {3}.
+  it('recognises CC bonus codes in all common variants', () => {
+    const cases = ['CC-1', 'CC1', 'cc-1', 'cc1', 'CC 1', 'cc 1']
+    for (const input of cases) {
+      const out = parseTradeText(input)
+      expect(out.offer.map((o) => o.id), `failed for: ${input}`).toEqual(['CC-1'])
+    }
+  })
+
+  it('parses a mixed line with CC and team codes including × multiplier', () => {
+    const out = parseTradeText('biete: GER-14×2, CC-3, CC-7 x2, FRA-5')
+    expect(out.hadOfferHeader).toBe(true)
+    expect(out.offer.sort((a, b) => a.id.localeCompare(b.id))).toEqual([
+      { id: 'CC-3', dups: 1 },
+      { id: 'CC-7', dups: 2 },
+      { id: 'FRA-5', dups: 1 },
+      { id: 'GER-14', dups: 2 },
+    ])
+  })
 })

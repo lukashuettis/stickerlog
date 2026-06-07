@@ -67,6 +67,69 @@ describe('tradeCheckCodec — list payloads', () => {
   })
 })
 
+describe('tradeCheckCodec — CC bonus slots (v2)', () => {
+  it('round-trips CC stickers in seek and offer', () => {
+    const enc = encodePayload({
+      kind: KIND_LIST,
+      seek: ['CC-1', 'CC-7', 'CC-12'],
+      offer: [{ id: 'CC-3', dups: 2 }],
+    })
+    const dec = decodePayload(enc)
+    expect(dec.version).toBe(PAYLOAD_VERSION)
+    expect(dec.seek.sort()).toEqual(['CC-1', 'CC-12', 'CC-7'])
+    expect(dec.offer).toEqual([{ id: 'CC-3', dups: 2 }])
+  })
+
+  it('round-trips a mix of FWC, nation, and CC stickers', () => {
+    const enc = encodePayload({
+      kind: KIND_LIST,
+      seek: ['FWC-0', 'GER-1', 'CC-12'],
+      offer: [
+        { id: 'FWC-19', dups: 1 },
+        { id: 'BRA-7', dups: 3 },
+        { id: 'CC-1', dups: 1 },
+      ],
+    })
+    const dec = decodePayload(enc)
+    expect(dec.seek.sort()).toEqual(['CC-12', 'FWC-0', 'GER-1'])
+    expect(dec.offer.sort((a, b) => a.id.localeCompare(b.id))).toEqual([
+      { id: 'BRA-7', dups: 3 },
+      { id: 'CC-1', dups: 1 },
+      { id: 'FWC-19', dups: 1 },
+    ])
+  })
+})
+
+describe('tradeCheckCodec — v1 backward compatibility', () => {
+  // A v1-encoded payload built by hand (the format predates this build).
+  // Layout: [1 (version), 0 (KIND_LIST), 123 bytes bitset, 0 0 (offer count = 0)].
+  // We set bit 0 (FWC-0) and bit 20 (MEX-1, the first national-team sticker).
+  const v1Payload = (() => {
+    const bytes = new Uint8Array(2 + 123 + 2)
+    bytes[0] = 1 // version
+    bytes[1] = KIND_LIST
+    bytes[2] = 0x01 // bit 0 = FWC-0
+    bytes[4] = 0x10 // bit 4 of byte 2 of bitset (byte index 4 in buf) = position 20 = MEX-1
+    // offer count stays 0
+    let b = ''
+    for (const x of bytes) b += String.fromCharCode(x)
+    return btoa(b).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+  })()
+
+  it('decodes a v1 payload using the legacy 123-byte bitset', () => {
+    const dec = decodePayload(v1Payload)
+    expect(dec.version).toBe(1)
+    expect(dec.kind).toBe(KIND_LIST)
+    expect(dec.seek.sort()).toEqual(['FWC-0', 'MEX-1'])
+    expect(dec.offer).toEqual([])
+  })
+
+  it('returns no CC entries for a v1 payload (those positions did not exist)', () => {
+    const dec = decodePayload(v1Payload)
+    expect(dec.seek.some((id) => id.startsWith('CC-'))).toBe(false)
+  })
+})
+
 describe('tradeCheckCodec — proposal payloads', () => {
   it('round-trips a 5+5 proposal', () => {
     const enc = encodePayload({

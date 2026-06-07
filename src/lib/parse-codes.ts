@@ -28,7 +28,8 @@ export interface ParsedCode {
 export function parseStickerCodes(text: string): ParsedCode[] {
   const normalized = text.toUpperCase()
   const out: ParsedCode[] = []
-  const matchRegex = /([A-Z]{3})\s*-?\s*(\d{1,3})/g
+  // {2,3} so 2-letter promo codes (CC) match alongside 3-letter team codes.
+  const matchRegex = /([A-Z]{2,3})\s*-?\s*(\d{1,3})/g
   const matchedRanges: Array<[number, number]> = []
   let m: RegExpExecArray | null
   while ((m = matchRegex.exec(normalized)) !== null) {

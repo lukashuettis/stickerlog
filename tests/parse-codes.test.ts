@@ -75,4 +75,15 @@ describe('parseStickerCodes — tolerant parser', () => {
     expect(result.every((r) => !r.valid)).toBe(true)
     expect(result.length).toBeGreaterThan(0)
   })
+
+  it.each([
+    ['CC-1', 'CC-1'],
+    ['CC1', 'CC-1'],
+    ['cc-1', 'CC-1'],
+    ['cc 1', 'CC-1'],
+    ['CC-12', 'CC-12'],
+  ])('recognises 2-letter CC promo code %p as %p', (input, expected) => {
+    const result = parseStickerCodes(input)
+    expect(result.find((r) => r.valid)?.stickerId).toBe(expected)
+  })
 })

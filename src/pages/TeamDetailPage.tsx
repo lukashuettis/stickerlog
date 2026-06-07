@@ -91,7 +91,13 @@ export function TeamDetailPage() {
         <div className="text-xs text-muted-foreground mb-2 font-medium">
           {t('teamDetail.hint')}
         </div>
-        <div className="grid grid-cols-5 gap-2">
+        <div
+          className={
+            // CC has 12 stickers — 4-col gives a clean 3×4 grid. Other teams
+            // (20 stickers for nations, 20 for FWC) stay 5-col.
+            stickers.length === 12 ? 'grid grid-cols-4 gap-2' : 'grid grid-cols-5 gap-2'
+          }
+        >
           {stickers.map((s) => (
             <StickerTile
               key={s.id}

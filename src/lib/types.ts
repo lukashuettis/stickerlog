@@ -11,7 +11,15 @@ export type StickerCatalog =
 
 // ─── Album master data ────────────────────────────────────────────────────
 
-export type StickerType = 'player' | 'badge' | 'team_photo' | 'intro' | 'fifa_museum'
+export type StickerType =
+  | 'player'
+  | 'badge'
+  | 'team_photo'
+  | 'intro'
+  | 'fifa_museum'
+  /** Coca-Cola-style promo sticker — outside the 980 base slots in the printed
+   *  album, but the user collects them all the same. Never cost-bearing. */
+  | 'promo'
 
 export interface AlbumSlot {
   n: number

@@ -5,15 +5,20 @@ import type { AcquisitionEvent, AcquisitionItem, CostStats } from './types'
  *   countsTowardCost = event.type === 'purchase'
  *                   AND item.direction === 'in'
  *                   AND item.itemKind === 'album'
+ *                   AND NOT a CC bonus promo (those don't come from paid packs)
  *
  * Anything else (bonus, dfb_special, panini_extra, cocacola, trade, gift,
- * promo, correction) does NOT count in cost-per-sticker / hit-rate.
+ * promo, correction) does NOT count in cost-per-sticker / hit-rate. The
+ * explicit CC prefix guard defends against a user accidentally typing a
+ * CC code in the pack-open textarea — that would otherwise pollute the
+ * cost-per-new-sticker calculation.
  */
 export function isCostBearing(item: AcquisitionItem, event: AcquisitionEvent): boolean {
   return (
     event.type === 'purchase' &&
     item.direction === 'in' &&
-    item.itemKind === 'album'
+    item.itemKind === 'album' &&
+    !item.stickerId.startsWith('CC-')
   )
 }
 

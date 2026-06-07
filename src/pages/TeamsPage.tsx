@@ -73,8 +73,12 @@ export function TeamsPage() {
 
   // Grouped mode: split the FWC specials out into their own section at the
   // top, then group the 48 nations by Panini album group letter.
+  // Three sections, top to bottom: FWC specials → 48 nations by group → CC bonus.
   const specials = filtered.filter((tp) => tp.team.code === 'FWC')
-  const nations = filtered.filter((tp) => tp.team.code !== 'FWC')
+  const bonus = filtered.filter((tp) => tp.team.code === 'CC')
+  const nations = filtered.filter(
+    (tp) => tp.team.code !== 'FWC' && tp.team.code !== 'CC',
+  )
   const groupLetters = Array.from(new Set(nations.map((tp) => tp.team.group).filter(Boolean)))
 
   return (
@@ -203,6 +207,26 @@ export function TeamsPage() {
               </section>
             )
           })}
+
+          {bonus.length > 0 && (
+            <section className="px-5 pt-4">
+              <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2 pl-1">
+                {t('teams.bonusHeader')}
+              </div>
+              <div className="grid grid-cols-4 gap-2 lg:grid-cols-4">
+                {bonus.map(({ team, owned: ow, total }) => (
+                  <TeamCard
+                    key={team.code}
+                    team={team}
+                    name={teamName(team, locale)}
+                    owned={ow}
+                    total={total}
+                    onClick={() => navigate(`/teams/${team.code}`)}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
         </>
       )}
 

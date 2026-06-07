@@ -9,44 +9,60 @@ import { NATIONAL_TEAMS } from '@/data/teams'
  *   - travel via WhatsApp/SMS/QR-code without backend involvement
  *   - never include personal data (names, notes, purchases)
  *   - decode in O(1) on any device with the same album catalog
- *   - extend forward (specials/variants) without breaking v1
+ *   - extend forward (specials/variants) without breaking previous versions
  *
  * Binary layout (before base64url):
  *
- *   byte 0       version (uint8) — currently 1
+ *   byte 0       version (uint8) — currently 2; v1 is still decodable.
  *   byte 1       kind    (uint8) — 0 = list, 1 = proposal
- *   bytes 2..124 seek-bitset (123 bytes covering 984 positions, of which 980 are
- *                used; trailing bits ignored on decode)
- *   bytes 125-126 offer-count (uint16 little-endian) — robust enough for >100
- *                duplicate slots without ever hitting the cap
- *   bytes 127+   offer entries — each is (positionIdx: uint16 LE, count: uint8)
- *                = 3 bytes per entry
+ *   bytes 2..N   seek-bitset
+ *                  v1: 123 bytes (980 positions)
+ *                  v2: 124 bytes (992 positions, of which the last 12 are CC)
+ *   bytes N+1..N+2  offer-count (uint16 little-endian)
+ *   bytes N+3..   offer entries — (positionIdx: uint16 LE, count: uint8)
+ *                  = 3 bytes per entry
  *
- * Position-Mapping (stable across builds within a major schema version):
+ * Position-Mapping (append-only between versions — v1 positions never move):
  *   0..19   → FWC-0 .. FWC-19
  *   20..979 → NATIONAL_TEAMS[i] codes 1..20 in declaration order
+ *   980..991→ CC-1 .. CC-12  (v2 only; v1 bitset doesn't address these bits)
+ *
+ * Backward compatibility:
+ *   - Old v1 links shared before the CC update keep decoding correctly.
+ *   - New encodes always use v2 — they're 1 byte larger but decode anywhere
+ *     running this build (which is all live installs after the v0.2.1 push).
  *
  * Size bounds:
- *   - typical (150 seek + 30 offer): ~217 raw → ~290 base64url chars
- *   - worst case (980 seek + 100 offer): 427 raw → ~570 chars
+ *   - typical (150 seek + 30 offer): ~218 raw → ~292 base64url chars
+ *   - worst case (992 seek + 100 offer): 428 raw → ~572 chars
  *   - hard cap MAX_PAYLOAD_BYTES = 1400 → ~1870 chars
  */
 
-export const PAYLOAD_VERSION = 1
+export const PAYLOAD_VERSION = 2
+const PAYLOAD_VERSION_LEGACY = 1
+const SUPPORTED_VERSIONS = new Set<number>([PAYLOAD_VERSION_LEGACY, PAYLOAD_VERSION])
 export const KIND_LIST = 0 as const
 export const KIND_PROPOSAL = 1 as const
-export const TOTAL_SLOTS = 980
-const BITSET_BYTES = Math.ceil(TOTAL_SLOTS / 8) // 123
+
+/** Current total slot count (v2 schema). */
+export const TOTAL_SLOTS = 992
+const TOTAL_SLOTS_V1 = 980
+const BITSET_BYTES = Math.ceil(TOTAL_SLOTS / 8) // 124 for v2
+const BITSET_BYTES_V1 = Math.ceil(TOTAL_SLOTS_V1 / 8) // 123 for v1
 export const MAX_PAYLOAD_BYTES = 1400
 
 // ─── Position ↔ Sticker-ID maps (built once) ──────────────────────────────
 
 const POSITION_TO_ID: string[] = (() => {
   const out: string[] = []
+  // v1 positions 0..979 (stable forever — never reorder)
   for (let i = 0; i < 20; i++) out.push(`FWC-${i}`)
   for (const team of NATIONAL_TEAMS) {
     for (let n = 1; n <= 20; n++) out.push(`${team.code}-${n}`)
   }
+  // v2 appended positions 980..991. v1 bitset (123 bytes) doesn't address
+  // these bits, so old payloads simply never encode them — backward safe.
+  for (let n = 1; n <= 12; n++) out.push(`CC-${n}`)
   if (out.length !== TOTAL_SLOTS) {
     throw new Error(
       `Codec position table has ${out.length} entries, expected ${TOTAL_SLOTS}. ` +
@@ -197,15 +213,23 @@ export function decodePayload(b64: string): DecodedPayload {
       'size_limit',
     )
   }
-  if (bytes.length < 2 + BITSET_BYTES + 2) {
+  // Need at least the version byte before we can pick the layout to validate.
+  if (bytes.length < 1) {
     throw new CodecError('Payload too short', 'truncated')
   }
   const version = bytes[0]
-  if (version !== PAYLOAD_VERSION) {
+  if (!SUPPORTED_VERSIONS.has(version)) {
     throw new CodecError(
-      `Unsupported payload version ${version}, expected ${PAYLOAD_VERSION}`,
+      `Unsupported payload version ${version}, expected one of ${[...SUPPORTED_VERSIONS].join(', ')}`,
       'unsupported_version',
     )
+  }
+  // v1 = 123-byte bitset (980 positions); v2 = 124-byte (992).
+  const bitsetBytes = version === PAYLOAD_VERSION_LEGACY ? BITSET_BYTES_V1 : BITSET_BYTES
+  const totalSlots = version === PAYLOAD_VERSION_LEGACY ? TOTAL_SLOTS_V1 : TOTAL_SLOTS
+
+  if (bytes.length < 2 + bitsetBytes + 2) {
+    throw new CodecError('Payload too short', 'truncated')
   }
   const kindRaw = bytes[1]
   if (kindRaw !== KIND_LIST && kindRaw !== KIND_PROPOSAL) {
@@ -213,9 +237,10 @@ export function decodePayload(b64: string): DecodedPayload {
   }
   const kind = kindRaw as PayloadKind
 
-  // Decode seek bitset
+  // Decode seek bitset. POSITION_TO_ID is append-only, so the first 980
+  // entries are identical for v1 and v2 — we just iterate up to totalSlots.
   const seek: string[] = []
-  for (let pos = 0; pos < TOTAL_SLOTS; pos++) {
+  for (let pos = 0; pos < totalSlots; pos++) {
     const bit = (bytes[2 + (pos >>> 3)] >>> (pos & 7)) & 1
     if (bit) {
       const id = POSITION_TO_ID[pos]
@@ -224,7 +249,7 @@ export function decodePayload(b64: string): DecodedPayload {
   }
 
   // Decode offer entries
-  const offerCountOffset = 2 + BITSET_BYTES
+  const offerCountOffset = 2 + bitsetBytes
   const offerCount = bytes[offerCountOffset] | (bytes[offerCountOffset + 1] << 8)
   const expectedLen = offerCountOffset + 2 + offerCount * 3
   if (bytes.length < expectedLen) {
@@ -241,8 +266,8 @@ export function decodePayload(b64: string): DecodedPayload {
     off += 3
     const id = POSITION_TO_ID[pos]
     if (!id) {
-      // Unknown position from a future schema — skip gracefully so the
-      // overall payload remains decodable, but report nothing crashy.
+      // Unknown position (e.g. v1 decoder seeing a v2 entry, or future schema)
+      // — skip gracefully so the overall payload remains decodable.
       continue
     }
     offer.push({ id, dups })

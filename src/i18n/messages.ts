@@ -50,7 +50,7 @@ const DE = {
   // ── Dashboard ──────────────────────────────────────────────────────────
   'dashboard.titleMobile': 'Dein Album',
   'dashboard.titleDesktop': 'Album',
-  'dashboard.subtitle': 'Fußball-WM 2026 · 980 Sticker',
+  'dashboard.subtitle': 'Fußball-WM 2026 · 992 Sticker',
   'dashboard.progressLabel': 'Fortschritt',
   'dashboard.progressLabelUpper': 'Album Fortschritt',
   'dashboard.missingShort': 'Noch {n} Sticker',
@@ -116,6 +116,7 @@ const DE = {
   'teams.sortAlpha': 'A–Z',
   'teams.specialHeader': 'Spezial',
   'teams.groupHeader': 'Gruppe {letter}',
+  'teams.bonusHeader': 'Bonus',
 
   // ── Team detail ────────────────────────────────────────────────────────
   'teamDetail.hint': 'Tippen zum Bearbeiten · Lang drücken = sofort +1',
@@ -357,6 +358,14 @@ const DE = {
   'rn.banner.title': 'Was ist neu in v{version}',
   'rn.banner.cta': 'Details',
   'rn.sheet.gotIt': 'Verstanden',
+  'rn.0_2_1.title': 'Bonus-Sticker dazu',
+  'rn.0_2_1.tagline': 'CC-Sticker als 49. Team — 12 neue Slots, 992 insgesamt',
+  'rn.0_2_1.h1':
+    'CC-1 bis CC-12 sind eintragbar wie jeder andere Sticker. Quick-Add, Album-Grid, Tausch-Check — alles inklusive.',
+  'rn.0_2_1.h2':
+    'Eigene Sektion „Bonus" unten in der Team-Übersicht. Trennt sie sauber von den 48 WM-Teams.',
+  'rn.0_2_1.h3':
+    'Completion-Quote bezieht jetzt die 12 Bonus-Sticker mit ein. Falls deine Prozentzahl leicht gesunken aussieht: ist nur, weil der Nenner gewachsen ist.',
   'rn.0_2_0.title': 'Tausch-Check ist da',
   'rn.0_2_0.tagline': 'Listen abgleichen, QR scannen, Verlauf — und mehr',
   'rn.0_2_0.h1':
@@ -465,7 +474,7 @@ const DE = {
   'settings.resetToast': 'Alle Daten gelöscht',
   'settings.groupApp': 'App',
   'settings.about': 'Über diese App',
-  'settings.aboutSubtitle': 'Version 0.2.0',
+  'settings.aboutSubtitle': 'Version 0.2.1',
   'settings.github': 'Open Source auf GitHub',
   'settings.githubToast': 'GitHub-Link kommt sobald veröffentlicht',
   'settings.disclaimer': 'Inoffizielles Fan-Projekt · nicht verbunden mit Panini oder FIFA',
@@ -530,7 +539,7 @@ const DE = {
   'notFound.cta': 'Zurück zum Dashboard',
 
   // ── Onboarding ─────────────────────────────────────────────────────────
-  'onboarding.s1.title': '980 Sticker, ein Überblick',
+  'onboarding.s1.title': '992 Sticker, ein Überblick',
   'onboarding.s1.body':
     'Verwalte deine WM-2026-Sammlung an einem Ort — ohne Account, ohne Anmeldung.',
   'onboarding.s2.title': 'Codes statt langes Tippen',
@@ -618,7 +627,7 @@ const EN: Record<MessageKey, string> = {
   // ── Dashboard ──────────────────────────────────────────────────────────
   'dashboard.titleMobile': 'Your album',
   'dashboard.titleDesktop': 'Album',
-  'dashboard.subtitle': 'World Cup 2026 · 980 stickers',
+  'dashboard.subtitle': 'World Cup 2026 · 992 stickers',
   'dashboard.progressLabel': 'Progress',
   'dashboard.progressLabelUpper': 'Album progress',
   'dashboard.missingShort': '{n} stickers to go',
@@ -684,6 +693,7 @@ const EN: Record<MessageKey, string> = {
   'teams.sortAlpha': 'A–Z',
   'teams.specialHeader': 'Specials',
   'teams.groupHeader': 'Group {letter}',
+  'teams.bonusHeader': 'Bonus',
 
   // ── Team detail ────────────────────────────────────────────────────────
   'teamDetail.hint': 'Tap to edit · long-press = quick +1',
@@ -919,6 +929,14 @@ const EN: Record<MessageKey, string> = {
   'rn.banner.title': "What's new in v{version}",
   'rn.banner.cta': 'Details',
   'rn.sheet.gotIt': 'Got it',
+  'rn.0_2_1.title': 'Bonus stickers added',
+  'rn.0_2_1.tagline': 'CC stickers as the 49th team — 12 new slots, 992 in total',
+  'rn.0_2_1.h1':
+    'CC-1 through CC-12 work like any other sticker — Quick-Add, album grid, Tausch-Check all support them.',
+  'rn.0_2_1.h2':
+    'Own "Bonus" section at the bottom of the team list. Keeps them visually separate from the 48 World Cup teams.',
+  'rn.0_2_1.h3':
+    'Completion rate now includes the 12 bonus slots. If your percentage looks a touch lower: the denominator just grew.',
   'rn.0_2_0.title': 'Trade-Check is here',
   'rn.0_2_0.tagline': 'Match lists, scan QR, history — and more',
   'rn.0_2_0.h1':
@@ -1026,7 +1044,7 @@ const EN: Record<MessageKey, string> = {
   'settings.resetToast': 'All data deleted',
   'settings.groupApp': 'App',
   'settings.about': 'About this app',
-  'settings.aboutSubtitle': 'Version 0.2.0',
+  'settings.aboutSubtitle': 'Version 0.2.1',
   'settings.github': 'Open source on GitHub',
   'settings.githubToast': 'GitHub link coming once published',
   'settings.disclaimer': 'Unofficial fan project · not affiliated with Panini or FIFA',
@@ -1090,7 +1108,7 @@ const EN: Record<MessageKey, string> = {
   'notFound.cta': 'Back to dashboard',
 
   // ── Onboarding ─────────────────────────────────────────────────────────
-  'onboarding.s1.title': '980 stickers, one place',
+  'onboarding.s1.title': '992 stickers, one place',
   'onboarding.s1.body': 'Track your World Cup 2026 collection — no account, no sign-up.',
   'onboarding.s2.title': 'Codes, not endless tapping',
   'onboarding.s2.body': 'Just type "GER 14, FRA 3, BRA 20" — fast and simple.',

@@ -41,10 +41,11 @@ const OFFER_HEADER_RE =
 const URL_RE = /https?:\/\/\S+/gi
 const PAYLOAD_FROM_URL_RE = /\/trade\/check\/([A-Za-z0-9_-]+)/
 
-// Matches "GER-3", "ger 14", "FRA3" — same surface as parseStickerCodes,
-// but here we also need to grab an optional × multiplier directly after.
+// Matches "GER-3", "ger 14", "FRA3", "CC-7", "cc7" — same surface as
+// parseStickerCodes, but here we also grab an optional × multiplier.
+// {2,3} so the 2-letter CC promo code is recognised alongside 3-letter teams.
 const CODE_WITH_DUPS_RE =
-  /([A-Z]{3})\s*-?\s*(\d{1,3})\s*(?:[x×X*]\s*(\d{1,3})|\((\d{1,3})\s*[x×X]\)|\((\d{1,3})\))?/gi
+  /([A-Z]{2,3})\s*-?\s*(\d{1,3})\s*(?:[x×X*]\s*(\d{1,3})|\((\d{1,3})\s*[x×X]\)|\((\d{1,3})\))?/gi
 
 interface ParseSection {
   kind: 'seek' | 'offer'

@@ -1,13 +1,15 @@
 import type { AlbumSlot, StickerType } from '@/lib/types'
 import { NATIONAL_TEAMS } from './teams'
 
-// The 980 base-album slots. Coca-Cola promos and DFB Glitter are intentionally
-// excluded — they live in promos.ts as a separate set.
+// 992 total slots: 980 base album + 12 bonus promo stickers from a separate
+// distribution channel.
 //
 // Layout (matches the Panini WC 2026 base album printed checklist):
-//   slots 1–20   → FWC specials (Cover, FIFA emblems, mascots, stadiums, museum…)
-//                  IDs FWC-0 … FWC-19. Sticker #0 is the Panini logo / cover.
-//   slots 21–980 → 48 teams × 20 stickers each (badge, team photo, 18 players)
+//   slots 1–20    → FWC specials (Cover, FIFA emblems, mascots, stadiums, museum…)
+//                   IDs FWC-0 … FWC-19. Sticker #0 is the Panini logo / cover.
+//   slots 21–980  → 48 teams × 20 stickers each (badge, team photo, 18 players)
+//   slots 981–992 → CC bonus promos (CC-1 … CC-12), outside the printed album,
+//                   never cost-bearing in pack-cost calculations.
 //
 // Player names + special labels are intentionally left blank — they are not
 // in the public checklist as structured data. Users see the sticker number
@@ -52,14 +54,28 @@ function buildAlbum(): AlbumSlot[] {
     }
   }
 
+  // CC bonus promos (CC-1 … CC-12, slots 981-992). Kept at the end so the
+  // codec's position table stays append-only and v1 payloads remain decodable.
+  for (let i = 1; i <= 12; i++) {
+    slots.push({
+      n,
+      id: `CC-${i}`,
+      teamCode: 'CC',
+      number: i,
+      type: 'promo',
+      hasFoil: true, // CC stickers are foil/glitter in practice
+    })
+    n++
+  }
+
   return slots
 }
 
 export const ALBUM: AlbumSlot[] = buildAlbum()
 
-if (ALBUM.length !== 980) {
-  // This should never happen — it's a build-time sanity check.
-  throw new Error(`Album should contain 980 slots, got ${ALBUM.length}`)
+// 980 base + 12 bonus = 992 total. Build-time sanity check.
+if (ALBUM.length !== 992) {
+  throw new Error(`Album should contain 992 slots, got ${ALBUM.length}`)
 }
 
 // ─── Lookup helpers ───────────────────────────────────────────────────────
@@ -78,8 +94,9 @@ export function findStickerByCode(input: string): AlbumSlot | undefined {
   // Try exact match first ("GER-1")
   const direct = ALBUM.find((s) => s.id === raw)
   if (direct) return direct
-  // Try with inserted hyphen ("GER14" → "GER-14")
-  const match = raw.match(/^([A-Z]{3})-?(\d{1,3})$/)
+  // Try with inserted hyphen ("GER14" → "GER-14", "CC3" → "CC-3").
+  // {2,3} so the 2-letter CC promo code is recognised alongside 3-letter teams.
+  const match = raw.match(/^([A-Z]{2,3})-?(\d{1,3})$/)
   if (!match) return undefined
   const [, code, num] = match
   return ALBUM.find((s) => s.teamCode === code && s.number === Number(num))

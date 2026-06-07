@@ -1,6 +1,7 @@
 import type { AlbumStats, CollectionCacheEntry } from './types'
 
-export const ALBUM_TOTAL = 980
+// 980 base-album slots + 12 CC bonus promo slots = 992 total trackable stickers.
+export const ALBUM_TOTAL = 992
 
 export function computeAlbumStats(entries: CollectionCacheEntry[]): AlbumStats {
   const albumEntries = entries.filter((e) => e.stickerCatalog === 'album')
