@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Gift, Wrench, Repeat, AlertTriangle } from 'lucide-react'
 import { BottomSheet } from '../ui/BottomSheet'
 import { Button } from '../ui/Button'
@@ -7,6 +6,7 @@ import { parseStickerCodes } from '@/lib/parse-codes'
 import {
   createGiftOutEvent,
   createCorrectionOutEvent,
+  createTradeEvent,
   findLastCopies,
   NegativeStockError,
 } from '@/lib/db'
@@ -23,11 +23,13 @@ interface GiveAwaySheetProps {
 
 export function GiveAwaySheet({ open, onClose }: GiveAwaySheetProps) {
   const t = useT()
-  const navigate = useNavigate()
   const { show } = useToast()
 
   const [type, setType] = useState<GiveType>('gift')
   const [text, setText] = useState('')
+  // Trade uses TWO textareas: received (in) and given (out).
+  const [textIn, setTextIn] = useState('')
+  const [textOut, setTextOut] = useState('')
   const [counterparty, setCounterparty] = useState('')
   const [notes, setNotes] = useState('')
   const [warnLast, setWarnLast] = useState<string[] | null>(null)
@@ -36,8 +38,16 @@ export function GiveAwaySheet({ open, onClose }: GiveAwaySheetProps) {
   const validIds = parsed.filter((p) => p.valid && p.stickerId).map((p) => p.stickerId!)
   const isEmpty = validIds.length === 0
 
+  const parsedIn = useMemo(() => parseStickerCodes(textIn), [textIn])
+  const parsedOut = useMemo(() => parseStickerCodes(textOut), [textOut])
+  const validInIds = parsedIn.filter((p) => p.valid && p.stickerId).map((p) => p.stickerId!)
+  const validOutIds = parsedOut.filter((p) => p.valid && p.stickerId).map((p) => p.stickerId!)
+  const tradeIsEmpty = validInIds.length === 0 && validOutIds.length === 0
+
   const reset = () => {
     setText('')
+    setTextIn('')
+    setTextOut('')
     setCounterparty('')
     setNotes('')
     setType('gift')
@@ -46,8 +56,18 @@ export function GiveAwaySheet({ open, onClose }: GiveAwaySheetProps) {
 
   const tryRunSave = async () => {
     if (type === 'trade') {
-      onClose()
-      navigate('/trade')
+      if (tradeIsEmpty) {
+        show(t('tradecheck.paste.empty'), 'info')
+        return
+      }
+      if (validOutIds.length > 0) {
+        const lasts = await findLastCopies('album', validOutIds)
+        if (lasts.length > 0) {
+          setWarnLast(lasts)
+          return
+        }
+      }
+      await actuallySave()
       return
     }
     if (isEmpty) {
@@ -65,6 +85,23 @@ export function GiveAwaySheet({ open, onClose }: GiveAwaySheetProps) {
   const actuallySave = async () => {
     setWarnLast(null)
     try {
+      if (type === 'trade') {
+        const inItems = validInIds.map((id) => ({ catalog: 'album' as const, id }))
+        const outItems = validOutIds.map((id) => ({ catalog: 'album' as const, id }))
+        await createTradeEvent({
+          inItems,
+          outItems,
+          counterparty: counterparty.trim() || undefined,
+          notes: notes.trim() || undefined,
+        })
+        show(
+          t('give.savedTrade', { inN: inItems.length, outN: outItems.length }),
+          'success',
+        )
+        reset()
+        onClose()
+        return
+      }
       const outItems = validIds.map((id) => ({ catalog: 'album' as const, id }))
       if (type === 'gift') {
         await createGiftOutEvent({
@@ -148,14 +185,85 @@ export function GiveAwaySheet({ open, onClose }: GiveAwaySheetProps) {
             </div>
 
             {type === 'trade' ? (
-              <div className="text-center py-4">
-                <p className="text-sm text-muted-foreground mb-3">
+              <>
+                <p className="text-xs text-muted-foreground mb-3 leading-snug">
                   {t('give.type.tradeHint')}
                 </p>
-                <Button onClick={tryRunSave}>
-                  {t('tradecheck.card.start')}
-                </Button>
-              </div>
+                <label className="block mb-3">
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 block">
+                    {t('give.tradeReceived')}
+                  </span>
+                  <textarea
+                    value={textIn}
+                    onChange={(e) => setTextIn(e.target.value)}
+                    placeholder={t('give.stickersPh')}
+                    className="w-full h-16 p-3 rounded-xl bg-muted border border-border text-sm resize-none"
+                  />
+                  {validInIds.length > 0 && (
+                    <div className="mt-1 text-xs text-muted-foreground">
+                      {validInIds.length === 1
+                        ? t('tradecheck.paste.detectedGive')
+                        : t('tradecheck.paste.detectedGiveN', { n: validInIds.length })}
+                    </div>
+                  )}
+                </label>
+                <label className="block mb-3">
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 block">
+                    {t('give.tradeGiven')}
+                  </span>
+                  <textarea
+                    value={textOut}
+                    onChange={(e) => setTextOut(e.target.value)}
+                    placeholder={t('give.stickersPh')}
+                    className="w-full h-16 p-3 rounded-xl bg-muted border border-border text-sm resize-none"
+                  />
+                  {validOutIds.length > 0 && (
+                    <div className="mt-1 text-xs text-muted-foreground">
+                      {validOutIds.length === 1
+                        ? t('tradecheck.paste.detectedGive')
+                        : t('tradecheck.paste.detectedGiveN', { n: validOutIds.length })}
+                    </div>
+                  )}
+                </label>
+                <label className="block mb-3">
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 block">
+                    {t('give.counterparty')}
+                  </span>
+                  <input
+                    type="text"
+                    value={counterparty}
+                    onChange={(e) => setCounterparty(e.target.value)}
+                    placeholder={t('give.counterpartyPh')}
+                    className="w-full h-10 px-3 rounded-lg bg-muted border border-border text-sm"
+                  />
+                </label>
+                <label className="block mb-4">
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 block">
+                    {t('give.notes')}
+                  </span>
+                  <input
+                    type="text"
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    placeholder=""
+                    className="w-full h-10 px-3 rounded-lg bg-muted border border-border text-sm"
+                  />
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      onClose()
+                      reset()
+                    }}
+                  >
+                    {t('give.cancel')}
+                  </Button>
+                  <Button onClick={tryRunSave} disabled={tradeIsEmpty}>
+                    {t('give.confirm')}
+                  </Button>
+                </div>
+              </>
             ) : (
               <>
                 {type === 'correction' && (

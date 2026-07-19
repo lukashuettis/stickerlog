@@ -24,6 +24,16 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: ReleaseNote[] = [
   {
+    version: '0.2.2',
+    date: '2026-07-19',
+    titleKey: 'rn.0_2_2.title',
+    taglineKey: 'rn.0_2_2.tagline',
+    highlights: [
+      'rn.0_2_2.h1',
+      'rn.0_2_2.h2',
+    ],
+  },
+  {
     version: '0.2.1',
     date: '2026-06-07',
     titleKey: 'rn.0_2_1.title',

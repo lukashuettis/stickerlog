@@ -325,7 +325,10 @@ const DE = {
   'give.type.correction': 'Aus Sammlung entfernen',
   'give.type.correctionHint': 'Zum Beispiel falsch eingetragen oder verloren.',
   'give.type.trade': 'Tausch',
-  'give.type.tradeHint': 'Öffnet den Tausch-Check',
+  'give.type.tradeHint':
+    'Trage direkt ein was du bekommen und gegeben hast — z.B. nach einem Live-Tausch.',
+  'give.tradeReceived': 'Bekommen',
+  'give.tradeGiven': 'Gegeben',
   'give.stickers': 'Welche Sticker?',
   'give.stickersPh': 'GER-3, FRA-5 …',
   'give.counterparty': 'An wen? (optional)',
@@ -334,6 +337,7 @@ const DE = {
   'give.confirm': 'Speichern',
   'give.cancel': 'Abbrechen',
   'give.savedGift': '{n} verschenkt',
+  'give.savedTrade': 'Tausch gespeichert · {inN} bekommen, {outN} gegeben',
   'give.savedCorrection': 'Bestand korrigiert',
   'give.warnLastTitle': 'Letztes Exemplar',
   'give.warnLastBody':
@@ -358,6 +362,12 @@ const DE = {
   'rn.banner.title': 'Was ist neu in v{version}',
   'rn.banner.cta': 'Details',
   'rn.sheet.gotIt': 'Verstanden',
+  'rn.0_2_2.title': 'Tausch direkt eintragen',
+  'rn.0_2_2.tagline': 'Live-Tausche ohne Umweg über Tausch-Check',
+  'rn.0_2_2.h1':
+    'Im „Verschenken"-Sheet gibt es jetzt einen Tausch-Modus mit zwei Feldern: was du bekommen und was du gegeben hast. Ein Klick, sauber gebucht.',
+  'rn.0_2_2.h2':
+    'Die Letzte-Kopie-Warnung greift automatisch — kein Verlieren wichtiger Sticker aus Versehen.',
   'rn.0_2_1.title': 'Bonus-Sticker dazu',
   'rn.0_2_1.tagline': 'CC-Sticker als 49. Team — 12 neue Slots, 992 insgesamt',
   'rn.0_2_1.h1':
@@ -474,7 +484,7 @@ const DE = {
   'settings.resetToast': 'Alle Daten gelöscht',
   'settings.groupApp': 'App',
   'settings.about': 'Über diese App',
-  'settings.aboutSubtitle': 'Version 0.2.1',
+  'settings.aboutSubtitle': 'Version 0.2.2',
   'settings.github': 'Open Source auf GitHub',
   'settings.githubToast': 'GitHub-Link kommt sobald veröffentlicht',
   'settings.disclaimer': 'Inoffizielles Fan-Projekt · nicht verbunden mit Panini oder FIFA',
@@ -899,7 +909,10 @@ const EN: Record<MessageKey, string> = {
   'give.type.correction': 'Remove from collection',
   'give.type.correctionHint': 'For example entered by mistake or lost.',
   'give.type.trade': 'Trade',
-  'give.type.tradeHint': 'Opens Trade-Check',
+  'give.type.tradeHint':
+    'Log directly what you received and gave — e.g. after a live trade.',
+  'give.tradeReceived': 'Received',
+  'give.tradeGiven': 'Given',
   'give.stickers': 'Which stickers?',
   'give.stickersPh': 'GER-3, FRA-5 …',
   'give.counterparty': 'To whom? (optional)',
@@ -908,6 +921,7 @@ const EN: Record<MessageKey, string> = {
   'give.confirm': 'Save',
   'give.cancel': 'Cancel',
   'give.savedGift': '{n} gifted',
+  'give.savedTrade': 'Trade saved · {inN} received, {outN} given',
   'give.savedCorrection': 'Inventory corrected',
   'give.warnLastTitle': 'Last copy',
   'give.warnLastBody':
@@ -929,6 +943,12 @@ const EN: Record<MessageKey, string> = {
   'rn.banner.title': "What's new in v{version}",
   'rn.banner.cta': 'Details',
   'rn.sheet.gotIt': 'Got it',
+  'rn.0_2_2.title': 'Log trades directly',
+  'rn.0_2_2.tagline': 'Live trades without going through Trade-Check',
+  'rn.0_2_2.h1':
+    'The "Give away" sheet now has a proper trade mode with two fields: what you received and what you gave. One click, cleanly booked.',
+  'rn.0_2_2.h2':
+    'Last-copy warning kicks in automatically — no accidentally losing important stickers.',
   'rn.0_2_1.title': 'Bonus stickers added',
   'rn.0_2_1.tagline': 'CC stickers as the 49th team — 12 new slots, 992 in total',
   'rn.0_2_1.h1':
@@ -1044,7 +1064,7 @@ const EN: Record<MessageKey, string> = {
   'settings.resetToast': 'All data deleted',
   'settings.groupApp': 'App',
   'settings.about': 'About this app',
-  'settings.aboutSubtitle': 'Version 0.2.1',
+  'settings.aboutSubtitle': 'Version 0.2.2',
   'settings.github': 'Open source on GitHub',
   'settings.githubToast': 'GitHub link coming once published',
   'settings.disclaimer': 'Unofficial fan project · not affiliated with Panini or FIFA',
