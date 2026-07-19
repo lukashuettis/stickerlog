@@ -195,6 +195,8 @@ const DE = {
   'tradecheck.share.textCopied': 'Text kopiert',
   'tradecheck.share.empty':
     'Du suchst nichts und bietest nichts — füll erst Sticker ein, dann hat ein Tausch-Check Sinn.',
+  'tradecheck.share.oversize':
+    'Deine Liste ist zu groß für Link/QR. Nutze „Als Text kopieren" — das funktioniert immer.',
   'tradecheck.share.body':
     '🤝 Mein Tausch-Check\n\nApp öffnen oder Link einfügen:\n{url}',
 
@@ -362,6 +364,12 @@ const DE = {
   'rn.banner.title': 'Was ist neu in v{version}',
   'rn.banner.cta': 'Details',
   'rn.sheet.gotIt': 'Verstanden',
+  'rn.0_2_3.title': 'Tausch-Seite Crash-Fix',
+  'rn.0_2_3.tagline': 'Große Sammlungen konnten die Seite abstürzen lassen — behoben',
+  'rn.0_2_3.h1':
+    'Wenn du sehr viele verschiedene Doppler hattest (über 400 unique), konnte die Tausch-Seite auf Desktop einen weißen/schwarzen Screen zeigen. Der Cap für teilbare Payloads wurde von 1400 auf 2500 Bytes angehoben.',
+  'rn.0_2_3.h2':
+    'Zusätzlich abgesichert: falls die Liste jemals wieder zu groß wird, erscheint ein Hinweis statt Absturz — Text-Export funktioniert dann immer noch.',
   'rn.0_2_2.title': 'Tausch direkt eintragen',
   'rn.0_2_2.tagline': 'Live-Tausche ohne Umweg über Tausch-Check',
   'rn.0_2_2.h1':
@@ -484,7 +492,7 @@ const DE = {
   'settings.resetToast': 'Alle Daten gelöscht',
   'settings.groupApp': 'App',
   'settings.about': 'Über diese App',
-  'settings.aboutSubtitle': 'Version 0.2.2',
+  'settings.aboutSubtitle': 'Version 0.2.3',
   'settings.github': 'Open Source auf GitHub',
   'settings.githubToast': 'GitHub-Link kommt sobald veröffentlicht',
   'settings.disclaimer': 'Inoffizielles Fan-Projekt · nicht verbunden mit Panini oder FIFA',
@@ -781,6 +789,8 @@ const EN: Record<MessageKey, string> = {
   'tradecheck.share.textCopied': 'Text copied',
   'tradecheck.share.empty':
     "You're not looking for or offering anything yet — add stickers first.",
+  'tradecheck.share.oversize':
+    'Your list is too large for a link or QR code. Use "Copy as text" — that always works.',
   'tradecheck.share.body':
     '🤝 My Trade-Check\n\nOpen the app or paste this link:\n{url}',
 
@@ -943,6 +953,12 @@ const EN: Record<MessageKey, string> = {
   'rn.banner.title': "What's new in v{version}",
   'rn.banner.cta': 'Details',
   'rn.sheet.gotIt': 'Got it',
+  'rn.0_2_3.title': 'Trade page crash fix',
+  'rn.0_2_3.tagline': 'Large collections could crash the page — fixed',
+  'rn.0_2_3.h1':
+    'If you had a lot of unique duplicates (over 400), the Trade page could show a white/black screen on desktop. Cap for shareable payloads raised from 1400 to 2500 bytes.',
+  'rn.0_2_3.h2':
+    'Extra safety net: if the list ever exceeds the cap again, a hint appears instead of a crash — the text export always works.',
   'rn.0_2_2.title': 'Log trades directly',
   'rn.0_2_2.tagline': 'Live trades without going through Trade-Check',
   'rn.0_2_2.h1':
@@ -1064,7 +1080,7 @@ const EN: Record<MessageKey, string> = {
   'settings.resetToast': 'All data deleted',
   'settings.groupApp': 'App',
   'settings.about': 'About this app',
-  'settings.aboutSubtitle': 'Version 0.2.2',
+  'settings.aboutSubtitle': 'Version 0.2.3',
   'settings.github': 'Open source on GitHub',
   'settings.githubToast': 'GitHub link coming once published',
   'settings.disclaimer': 'Unofficial fan project · not affiliated with Panini or FIFA',

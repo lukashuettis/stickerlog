@@ -49,7 +49,12 @@ export const TOTAL_SLOTS = 992
 const TOTAL_SLOTS_V1 = 980
 const BITSET_BYTES = Math.ceil(TOTAL_SLOTS / 8) // 124 for v2
 const BITSET_BYTES_V1 = Math.ceil(TOTAL_SLOTS_V1 / 8) // 123 for v1
-export const MAX_PAYLOAD_BYTES = 1400
+// Raised from 1400 → 2500 in v0.2.3 after a real user hit the cap with 427
+// unique duplicate IDs (payload = 128 + 427*3 = 1409 bytes). At 2500 bytes we
+// support up to (2500-128)/3 = 790 unique offer entries — well beyond any
+// realistic collection. 2500 raw bytes → ~3334 base64url chars, still fits
+// inside a QR code v40 alphanumeric (4296 char max).
+export const MAX_PAYLOAD_BYTES = 2500
 
 // ─── Position ↔ Sticker-ID maps (built once) ──────────────────────────────
 

@@ -24,16 +24,29 @@ export function ShareSheet({ open, onClose, lists }: ShareSheetProps) {
   const { show } = useToast()
   const [qrOpen, setQrOpen] = useState(false)
 
+  // We compute the URL eagerly so link/QR options can be disabled instantly
+  // when there's nothing to share OR the payload exceeds the codec's byte cap.
+  // encodePayload throws on oversize — catch it defensively so a large
+  // collection can't crash the whole TradePage render.
   const url = useMemo(() => {
-    const seek = lists.seek.flatMap((g) => g.items.map((s) => s.id))
-    const offer = lists.offer.flatMap((g) =>
-      g.items.map((s) => ({ id: s.id, dups: g.dupCounts.get(s.id) ?? 1 })),
-    )
-    if (seek.length === 0 && offer.length === 0) return null
-    return buildShareUrl({ kind: KIND_LIST, seek, offer })
+    try {
+      const seek = lists.seek.flatMap((g) => g.items.map((s) => s.id))
+      const offer = lists.offer.flatMap((g) =>
+        g.items.map((s) => ({ id: s.id, dups: g.dupCounts.get(s.id) ?? 1 })),
+      )
+      if (seek.length === 0 && offer.length === 0) return null
+      return buildShareUrl({ kind: KIND_LIST, seek, offer })
+    } catch (e) {
+      console.warn('[ShareSheet] Could not build share URL:', e)
+      return null
+    }
   }, [lists])
 
+  const hasAnyContent = lists.totalSeek > 0 || lists.totalOffer > 0
   const isEmpty = url === null
+  // isEmpty covers two cases: truly empty (nothing to share), OR the payload
+  // was too big for link/QR. In the latter case we can still export as text.
+  const isOversize = url === null && hasAnyContent
 
   const handleNativeShare = async () => {
     if (!url) {
@@ -88,6 +101,11 @@ export function ShareSheet({ open, onClose, lists }: ShareSheetProps) {
           <p className="text-xs text-muted-foreground m-0 mb-4">
             {t('tradecheck.share.subtitle')}
           </p>
+          {isOversize && (
+            <div className="mb-4 p-3 rounded-xl bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-200 text-xs leading-snug">
+              {t('tradecheck.share.oversize')}
+            </div>
+          )}
           <div className="space-y-2">
             <Row
               icon={<Share2 size={20} />}

@@ -188,6 +188,6 @@ describe('tradeCheckCodec — error paths', () => {
     // Build an artificially huge offer list with the same id repeated isn't
     // possible (sparse dedupes); instead lean on the validation by asserting
     // the cap exists.
-    expect(MAX_PAYLOAD_BYTES).toBe(1400)
+    expect(MAX_PAYLOAD_BYTES).toBe(2500)
   })
 })
